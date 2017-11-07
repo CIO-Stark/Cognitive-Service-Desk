@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Daniel Abrao">
+    <meta name="description"
+          content="Watson Helpdesk Ticket analysis">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style> @import url('https://fonts.googleapis.com/css?family=Quicksand');</style>
+    <style> @import url('./ticket-board/ticket-board.style.css');</style>
+    <title>LA CIO Watson Helpdesk - Ticket Analysis</title>
+</head>
+<body>
+<nav>
+    <% include ./templates/header %>
+</nav>
+
+<main id="main">
+    <aside id="side-menu">
+    </aside>
+    <section id="content-wrapper">
+
+        <div class="content">
+
+            <div>
+                <section>
+                    <header>
+                        <div>
+                            <a href="#" data-tab="1" class="tab active">
+                                <span>New tickets</span>
+                            </a>
+                            <a href="#" data-tab="2" class="tab">
+                                <span>Resolved tickets</span>
+                            </a>
+                        </div>
+                        <div>
+                            <select id="filter">
+                                <optgroup label="Filter by: "></optgroup>
+                                <option value="default">
+                                    Number
+                                </option>
+                                <option value="userQuestion">
+                                    Question
+                                </option>
+                                <option value="reason">
+                                    Reason
+                                </option>
+                                <option value="timestamp">
+                                    Timestamp
+                                </option>
+                                <option value="requester">
+                                    Requester
+                                </option>
+                                <option value="ticketLanguage">
+                                    Language
+                                </option>
+                                <option value="employeeCountry">
+                                    Country
+                                </option>
+                            </select>
+                            <p>
+                                <label for="search-input">Search</label>
+                                <input type="text" id="search-input" />
+                            </p>
+                            <a id="download" href="/retrieveTickets/?status=new&limit=199&sort=asc&report=true">
+                                <button>Export as excel</button>
+                            </a>
+                            <button id="refresh">Refresh</button>
+
+                        </div>
+                    </header>
+                    <main id="tst">
+                        <div data-content="1" class="contentx active">
+
+
+                            <table id="new-ticket-table">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>User Question</th>
+                                    <th>Reason</th>
+                                    <th>Open Date</th>
+                                    <th>Requester</th>
+                                    <th>Language</th>
+                                    <th>Country</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div data-content="2" class="contentx">
+                            <table id="resolved-ticket-table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Requester</th>
+                                        <th>Country</th>
+                                        <th>Reason</th>
+                                        <th>Open Date</th>
+                                        <th>Resolution Date</th>
+                                        <th>Resolved By</th>
+                                        <th>Resolution</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </main>
+
+                </section>
+
+            </div>
+        </div>
+        <footer>
+        </footer>
+    </section>
+    <div class="block"></div>
+</main>
+<aside class="popup">
+    <header>
+        <h3 id="ticket-no"></h3>
+        <button class="close">X</button>
+    </header>
+    <main>
+
+        <section id="ticket">
+
+        </section>
+        <section id="form">
+            <textarea id="ticket-resolution"></textarea>
+            <div>
+                <button class="actions">Close ticket</button>
+            </div>
+        </section>
+
+
+    </main>
+
+</aside>
+<script src="./ticket-board/scripts/sortable.js" type="text/javascript"></script>
+<script src="./ticket-board/dist/bundle.min.js"></script>
+</body>
+</html>

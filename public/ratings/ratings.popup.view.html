@@ -1,0 +1,17 @@
+<button class="button button-icon ion-ios-close-empty teste" ng-click="closeRatingPopup()"></button>
+
+<div ng-show="sending" class="rating-backdrop">
+</div>
+	<ion-spinner ng-show="sending" class="rating-spinner" ></ion-spinner>
+<ion-list>
+	<ion-item>
+		<h6 >Rate your experience</h6>
+		<rating id="rating" ng-model="rate" max="max"></rating>
+	</ion-item>
+	<ion-item item="item" ng-click="openRatingModal()">
+		<h6>Make a suggestion or Report a problem</h6>
+	</ion-item>
+	
+</ion-list>
+<span>
+		<button ng-click="sendRating()" class="button-clear">{{ratingValue > 0? 'Send feedback' : 'Dismiss'}}</button>

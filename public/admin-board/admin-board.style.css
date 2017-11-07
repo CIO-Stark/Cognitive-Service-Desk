@@ -1,0 +1,331 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body > div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+body > div > header {
+    background-color: snow;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-basis: 65px;
+    min-height: 65px;
+    border: 1px;
+    border-color: #fff;
+    z-index: 1;
+    padding: 0 20px;
+}
+
+body > div > header > #main-nav {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+body > div > header > #main-nav > h1 {
+    margin: 0;
+    white-space: nowrap;
+}
+
+body > div > header > #user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-basis: 190px;
+}
+
+body > div > header > #user > img {
+    height: 40px;
+    width: auto;
+}
+
+body > div > nav {
+    background-color: #fff;
+    display: flex;
+    flex-direction: row;
+    flex-basis: 80px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .1);
+    align-items: center;
+    align-content: space-around;
+    padding: 0 20px;
+    z-index: 1;
+}
+
+body > div > nav > div#options {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+}
+
+body > div > nav > div#filters {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid #dcdcdc;
+    border-radius: 2px;
+    box-shadow: inset 1px 1px 10px 1px rgba(0,0,0,.1);
+    flex-basis: 120px;
+    justify-content: space-around;
+    height: 40px;
+}
+
+body > div > main {
+    flex: 1;
+    background-color: snow;
+    position: relative;
+    /*background-color: yellow;*/
+    display: flex;
+}
+
+body > div > main > aside {
+    display: flex;
+    animation: slide-left .2s ease-out forwards;
+    max-width: 310px;
+    padding: 10px;
+    max-height: 100%;
+    overflow: scroll;
+    background-color: whitesmoke;
+}
+
+body > div > main > aside > pre {
+    max-width: 100%;
+    flex-wrap: wrap;
+    width: 100%;
+    white-space: normal;
+    background: lightgoldenrodyellow;
+    box-shadow: 0 0 1px 1px gainsboro;
+    padding: 5px;
+    /* margin: 0; */
+}
+
+body > div > main > aside.hide {
+    animation: slide-right .2s ease-in forwards;
+}
+
+
+@keyframes slide-left {
+    from {
+        flex-basis: 0;
+    }
+    to {
+        flex-basis: 300px;
+    }
+}
+
+@keyframes slide-right {
+    from {
+        flex-basis: 300px;
+    }
+    to {
+        flex-basis: 0;
+    }
+}
+
+body > div > main > div.contentx {
+    /*background-color: red;*/
+    display: none;
+    flex: 1;
+}
+
+body > div > main > div.contentx.active {
+    display: block;
+}
+
+body > div > main > div.contentx > div.wrapper {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+    align-items: center;
+    flex-direction: column;
+}
+
+body > div > main > div.contentx > div.wrapper > #lowNegative.dataContainer {
+    overflow: scroll;
+    display: flex;
+    max-height: 100%;
+    /* height: 100%; */
+    z-index: 2000;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: flex-start;
+    padding: 10px;
+}
+
+#highNegative {
+    overflow: scroll;
+}
+
+body > div > main > div.contentx > div.wrapper > div.dataContainer > div {
+    background: white;
+    padding: 10px;
+    position: relative;
+    box-shadow: 0px 0px 1px 0px gainsboro;
+    align-items: center;
+    display: flex;
+    margin: 5px;
+    transition: all 0.3s linear;
+    border: 1px solid lightgreen;
+    color: darkslategray;
+}
+
+body > div > main > div.contentx > div.wrapper > div.dataContainer#lowNegative > div:hover {
+    background-color: rgba(0, 0, 0, .2);
+    cursor: pointer;
+    color: black;
+    font-weight: 500;
+}
+
+body > div > main > div.contentx > div.wrapper > div.dataContainer > div.removed {
+    border: 1px solid red;
+    color: gray;
+    opacity: 0.5;
+}
+
+body > div > main > div.contentx > div.wrapper > div.dataContainer#lowNegative > div:hover aside.remove-user {
+    display: block;
+    cursor: pointer;
+    animation: fadeIn .2s ease-out;
+}
+
+
+.remove-user {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    background: white;
+    right: -15px;
+    top: -15px;
+    border-radius: 50%;
+    display: none;
+    border: 1px solid gainsboro;
+    text-align: center;
+
+}
+
+.remove-user::after {
+    content: "❌";
+    width: 100%;
+    height: 100%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+body > div > main > div.contentx > div.wrapper > div.dataContainer > div.removed .remove-user::after {
+    content: "✓";
+}
+
+aside.remove-user:hover {
+    box-shadow: 0 0 1px 1px red;
+}
+
+#sendmail {
+    min-width: 100px;
+    min-height: 48px;
+    background: transparent;
+    border-radius: 20px;
+    width: 15%;
+    margin: 10px;
+    font-size: 16px;
+    display: none;
+    letter-spacing: 1px;
+    border: 1px solid rebeccapurple;
+    cursor: pointer;
+}
+
+#highNegative > div > span {
+    flex: 1;
+}
+
+
+@media screen and (max-width: 420px) {
+    body > div > header > #user {
+        justify-content: flex-end;
+    }
+
+    body > div > header > #user > span {
+        display: none;
+    }
+
+}
+
+
+.loading {
+    z-index: 2;
+    top: 100px;
+    position: relative;
+    margin: 0 auto;
+    height: 80px;
+    width: 80px;
+    -webkit-animation-name: spin;
+    -webkit-animation-duration: 100ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: spin;
+    -moz-animation-duration: 100ms;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -ms-animation-name: spin;
+    -ms-animation-duration: 100ms;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: linear;
+    animation-name: spin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#metrics-table .loading {
+    height: 50px;
+    margin: 20px;
+    top: initial;
+}
+
+@-ms-keyframes spin {
+    from { -ms-transform: rotate(0deg); }
+    to { -ms-transform: rotate(360deg); }
+}
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+
+@-ms-keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1 }
+}
+@-moz-keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1 }
+}
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1 }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1 }
+}

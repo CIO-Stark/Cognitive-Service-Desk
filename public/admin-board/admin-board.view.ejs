@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="author" content="Daniel Abrao">
+    <meta name="description"
+          content="Watson Helpdesk SME Action Board">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style> @import url('https://fonts.googleapis.com/css?family=Quicksand');</style>
+    <style> @import url('./admin-board/admin-board.style.css');</style>
+    <style> @import url('/lib/ladda-themeless.min.css');</style>
+
+    <title>LA CIO Watson Helpdesk - SME Board</title>
+</head>
+<body>
+    <div>
+        <header>
+            <% include ./templates/header.ejs %>
+        </header>
+        <nav>
+            <div id="options">
+                <a href="#" data-tab="1" class="tab active">
+                    <span>Low Negative actions</span>
+                </a>
+
+                <a href="#" data-tab="2" class="tab">
+                    <span>High Negative actions</span>
+                </a>
+
+                <a href="#" data-tab="3" class="tab">
+                    <span>Logs</span>
+                </a>
+            </div>
+
+            <div id="filters">
+                <select id="lang-selector-new">
+                    <option selected value="1">Brazil</option>
+                    <option value="2">SSA</option>
+                </select>
+                <button id="load-list">Load</button>
+            </div>
+        </nav>
+        <main>
+            <div data-content="1" class="contentx active">
+                <div class="wrapper">
+                    <div id="lowNegative" class="dataContainer">
+                    </div>
+                    <button id="sendmail">Engage</button>
+                    <img id="loading-low-negative" class="loading" src="/assets/raw/fb-loading.svg" />
+                </div>
+
+                <!--<img id="backlog-loading" class="loading" src="/assets/raw/fb-loading.svg" />-->
+            </div>
+            <div data-content="2" class="contentx">
+                <div class="wrapper">
+                    <div id="highNegative" class="dataContainer">
+
+                    </div>
+                </div>
+                <!--<img id="backlog-loading" class="loading" src="/assets/raw/fb-loading.svg" />-->
+            </div>
+
+            <div data-content="3" class="contentx">
+                <div class="wrapper">
+                    <div id="logs" class="dataContainer">
+                        <div id="emailLogs">
+                            <h2>Emails</h2>
+                        </div>
+                        <div id="telLogs">
+                            <h2>Emails</h2>
+                        </div>
+                    </div>
+                </div>
+                <!--<img id="backlog-loading" class="loading" src="/assets/raw/fb-loading.svg" />-->
+            </div>
+
+        </main>
+    </div>
+
+<script src="/lib/toastr/toastr.js"></script>
+<script src="./admin-board/dist/bundle.min.js"></script>
+
+
+</body>
+</html>

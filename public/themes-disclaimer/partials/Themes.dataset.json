@@ -1,0 +1,22 @@
+/**
+ * Created by danielabrao on 12/13/16.
+ */
+[
+{
+  "themeName": "VPN",
+  "themeImgSrc": "images/disclaimer/att.png",
+  "themeAlt": "vpnLogo",
+  "themeDescription": {
+    "pt": "Pode me perguntar qualquer coisa sobre AT&T, desde a gestão de acessos, até por como configurar ou mesmo problemas que possam ocorrer no AT&T.",
+    "es": "Puedes consultarme sobre la gestión de los accesos para AT&T (Cómo solicitar tu usuario), la configuración necesaria para la conexión y podemos revisar los inconvenientes que tengas durante la conexión a la red IBM o de su uso en Windows 7."
+  }
+}, {
+  "themeName": "Network",
+  "themeImgSrc": "images/disclaimer/wifi.png",
+  "themeAlt": "wifiLogo",
+  "themeDescription": {
+    "pt": "Pode me questionar sobre qualquer coisa de redes, desde 'Como configurar o wireless' até sobre 'Minha wireless nao conecta'. Fique a vontade!",
+    "es": "Puedo ayudarte a resolver inconvenientes al querer establecer conexiones (Wireless en IBM, configurar proxy, conectar tu dispositivo mobile a la red IBM, solicitar un cable Ethernet) o gestionar tus permisos a Intranet (Cambo o reset de password de Intranet)."
+  }
+}
+]

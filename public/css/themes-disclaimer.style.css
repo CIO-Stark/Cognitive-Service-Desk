@@ -1,0 +1,205 @@
+/** {*/
+/*outline: 1px outset red;*/
+/*}*/
+
+
+
+#themes-disclaimer {
+    display: none;
+    height: 100%;
+    font-family: "Roboto", "Helvetica Neue", "Segoe UI", sans-serif !important;
+    letter-spacing: 2px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: rgba(235, 236, 235, .95);
+    flex-direction: column;
+    z-index: 40;
+    transition: transform 1s ease-in;
+}
+
+#themes-header {
+    padding: 10px 0;
+    display: flex;
+    background-color: white;
+    box-shadow: 1px 1px 1px 1px rgba(100, 149, 237, 0.25);
+    height: 100px;
+    font-size: 18px;
+}
+
+#themes-header > img {
+    width: 100px;
+}
+
+.themes-img-holder {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    box-shadow: 3px 3px 5px -5px;
+    border: 3px solid rgba(255,255,255, 0.4);
+}
+
+.themes-img {
+    width: 90%;
+    height: 90%;
+    cursor: pointer;
+}
+
+.themes-description {
+    font-size: 20px;
+    margin: 10px;
+    color: grey;
+    text-align: center;
+}
+
+#themes-intro {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+
+#themes-content {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    padding: 40px 0;
+    overflow-y: scroll;
+}
+
+.content-box {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 180px;
+}
+
+#themes-action {
+    display: flex;
+    padding: 20px;
+    box-sizing: border-box;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 1px 1px 1px 1px rgba(100, 149, 237, 0.25);
+    height: auto;
+}
+
+#themes-action > #themes-details {
+    /* border: 1px solid gainsboro; */
+    background: white;
+    margin: 3px 0;
+    border-radius: 2px;
+    padding: 20px;
+    box-shadow: 0px 0px 1px 1px gainsboro;
+    box-sizing: border-box;
+    font-size: 18px;
+    letter-spacing: 2px;
+    align-self: flex-start;
+    line-height: 1.5em;
+    display: none;
+}
+
+.action-button {
+    background-color: cornflowerblue;
+    height: 50px;
+    min-width: 100px;
+    color: white;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 16px;
+    border: 0;
+    box-shadow: 0px 1px 1px 0px blue;
+    border-radius: 2px;
+}
+
+.action-button:active {
+    transform: scale(0.95);
+}
+
+#themes-action > .action-button:active {
+    transform: scale(0.95);
+}
+
+#themes-action > div:nth-child(2) {
+    padding: 5px 0;
+    flex-direction: column;
+    display: flex;
+    align-items: flex-end;
+}
+
+#themes-action > div:nth-child(2) > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0 0 0;
+}
+
+#themes-action > div:nth-child(2) > div > label {
+    font-size: 10px;
+}
+
+#disclaimer-check {
+    height: 15px;
+    margin: 5px;
+}
+
+#themes-action > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+@media only screen and (max-width: 560px) {
+    #themes-action {
+        height: 100px;
+        display: flex;
+        padding: 15px;
+        box-sizing: border-box;
+        justify-content: center;
+        box-shadow: 1px -1px 1px 1px rgba(100, 149, 237, 0.25);
+        background-color: white;
+        flex-direction: column;
+        text-align: center;
+        z-index: 5;
+        align-items: center;
+    }
+
+    #themes-action > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .action-button {
+        width: 60%;
+    }
+
+    #themes-details {
+        display: none !important;
+
+    }
+
+    #themes-action > div:nth-child(2) {
+        flex-direction: column !important;
+        display: flex;
+        align-items: center;
+    }
+
+    #themes-header > img {
+        width: 75px;
+    }
+
+    #themes-intro {
+        font-size: 15px;
+    }
+}

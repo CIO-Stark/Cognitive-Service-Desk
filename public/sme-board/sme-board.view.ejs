@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Daniel Abrao">
+    <meta name="description"
+          content="Watson Helpdesk SME Action Board">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style> @import url('https://fonts.googleapis.com/css?family=Quicksand');</style>
+    <!--<style> @import url('./sme-board/sme-board.style.css');</style>-->
+    <style> @import url('./sme-board/sme-board.style.min.css');</style>
+    <style> @import url('/lib/ladda-themeless.min.css');</style>
+
+    <title>LA CIO Watson Helpdesk - SME Board</title>
+</head>
+<body>
+<nav>
+    <% include ./templates/header %>
+</nav>
+
+<main id="main">
+    <aside id="side-menu">
+        <div class="side-menu-wrapper">
+            <div>
+                <a href="#" data-tab="1" class="tab active">
+                    <span>Backlog</span>
+                </a>
+
+                <a href="#" data-tab="2" class="tab">
+                    <span>Resolved feedbacks</span>
+                </a>
+                <a href="#" data-tab="3" class="tab">
+                    <span>Scorecard</span>
+                </a>
+            </div>
+
+            <div id="filters">
+                <select id="lang-selector-new">
+                    <option disabled selected value="">Loading</option>
+                </select>
+                <select id="type-selector-new">
+                    <option selected value="0">Negative NLC</option>
+                    <option value="1">Positive NLC</option>
+                </select>
+                <button id="load-backlog">Load</button>
+            </div>
+
+        </div>
+    </aside>
+    <div class="wrapper1">
+        <div class="div1">
+        </div>
+    </div>
+    <section id="content-wrapper">
+
+        <div data-content="1" class="contentx active">
+            <main>
+                <header>
+                    <div>
+                        <div>
+                            <div>
+                                <label>Search:</label>
+                                <input class="searchFeedbacks" type="text" />
+                            </div>
+                            <button class="ladda-button" data-style="slide-up" id="export-backlog">Export as CSV</button>
+                        </div>
+                    </div>
+
+                    <div class="backlog-count">
+                        <label>
+                            <span id="backlog-count-one">?</span>
+                            Actual Backlog
+                        </label>
+                    </div>
+                </header>
+                <img id="backlog-loading" class="loading" src="/assets/raw/fb-loading.svg" />
+                <div>
+                <table id="sme-action-list">
+                    <thead>
+                    <tr>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+                </div>
+            </main>
+
+        </div>
+        <div data-content="2" class="contentx">
+            <main>
+
+                <header>
+
+                    <div>
+                        <div>
+                            <div>
+                                <label>Search:</label>
+                                <input class="searchResolvedFeedbacks" type="text" />
+                            </div>
+                            <button class="ladda-button" data-style="slide-up" id="export-resolved">Export as CSV</button>
+                        </div>
+                    </div>
+                    <div class="backlog-count">
+                        <label>
+                            <span id="resolved-count-one">?</span>
+                            Actual Resolved
+                        </label>
+                    </div>
+                </header>
+                <img id="resolved-loading" class="loading" src="/assets/raw/fb-loading.svg" />
+                <div>
+                    <table id="resolved-feedback-list">
+                        <thead>
+                        <tr>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </main>
+        </div>
+        <div data-content="3" class="contentx">
+            <main>
+                <header id="metrics-header">
+                    <div>
+                        <span>Filters: </span>
+                        <div>
+                            <select id="year-select">
+                                <option value="2016">2016</option>
+                                <option value="2017">2017</option>
+                            </select>
+                            <select id="quarter-select">
+                                <option value="1">1 Quarter</option>
+                                <option value="2">2 Quarter</option>
+                                <option value="3">3 Quarter</option>
+                                <option value="4">4 Quarter</option>
+                            </select>
+                            <button class="ladda-button" id="load-scorecard">Load</button>
+                            <button class="ladda-button" data-style="slide-up" id="export-scorecard">Export as CSV</button>
+                        </div>
+                    </div>
+
+                    <div class="backlog-count">
+                        <label>
+                            <span id="backlog-count">?</span>
+                            Actual Backlog
+                        </label>
+                    </div>
+                </header>
+
+                <div id="metrics-table">
+                    <section>
+                        <header>
+                            <h4 id="total-header"></h4>
+                        </header>
+                        <img id="total-loading" class="loading" src="/assets/raw/fb-loading.svg" />
+                        <div id="total-wrapper" class="month-wrapper">
+                        </div>
+                    </section>
+
+                    <section id="dialogCount-table">
+                        <header>
+                            <h4 id="dialogCount-header"></h4>
+                        </header>
+                        <img id="dialogCount-loading" class="loading" src="/assets/raw/fb-loading.svg" />
+                        <div id="dialogCount-wrapper" class="month-wrapper">
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </section>
+</main>
+<script src="./sme-board/scripts/sortable.js" type="text/javascript"></script>
+<script src="/lib/toastr/toastr.js"></script>
+<script src="./sme-board/dist/bundle.min.js"></script>
+
+
+</body>
+</html>

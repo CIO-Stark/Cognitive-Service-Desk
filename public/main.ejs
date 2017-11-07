@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html ngCloak>
+<head>
+    <meta charset="utf-8">
+    <title>Watson IT Help for Latin America</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="copyright" href="http://www.ibm.com/br-pt/">
+    <link rel="shortcut icon" href="images/watson-favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/watson-favicon.ico" type="image/x-icon">
+    <link href="lib/ionic/css/ionic.min.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/themes-disclaimer.style.css" rel="stylesheet" type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,400" rel="stylesheet">
+    <!--<link href="css/dist/style.min.css" rel="stylesheet" type="text/css">-->
+    <link href="lib/ng-css-ios-spinner-master/dist/ios-spinner.style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body data-ng-app="watsonchat" ng-cloak data-ng-csp ng-controller="ChatController">
+<span class="hidden-username" id="username">Usuário Teste</span>
+<span class="hidden-username" id="token"><%= token %></span>
+<ion-view id="userMessagesView" view-title="Watson IT Help"
+          hide-back-button="true" hide-nav-bar="true">
+
+
+    <div class="wrapper-web" id="blur">
+        <div ng-controller="FavoritesController as FavCtrl">
+            <div class="web-tst col-center col user-detail" ng-class="{active: isClicked}">
+                <div class="user-detail-info">
+                    <img class="user-pic larger" ng-src="{{user.pic}}"
+                         onerror="this.onerror=null;this.src='images/profile.png';"/>
+                    <span class="user-detail-name">Teste</span>
+                    <span class="user-detail-job">{{user.uid}}</span>
+                </div>
+            </div>
+            <div class="web-tst col-center col" ng-cloak>
+                <ion-item class="current-list"
+                          ng-show="isFavorite"
+                          ng-click="toggleGroup(this)"
+                          ng-class="{test: isFavorite}">
+							<span class="current-list-name">
+								<i class="ion-ios-chatbubble-outline"></i>Current Chat
+							</span>
+                </ion-item>
+
+                <div class="favorites-header">
+                    <img src="../images/icn-favorites.svg" class="icn-favorites" />
+                    <span class="favorites-header-name">Favorites</span>
+                    <button ng-click="refreshFavorites()"
+                            class="button button-icon ion-ios-refresh-empty">
+                    </button>
+                    <button ng-click="deleteFavorites()"
+                            class="button button-icon ion-trash-a">
+                    </button>
+                </div>
+
+                <ion-list class="fav-list" ng-if="arr.length" >
+                    <div class="item-input-wrapper fav-search-out">
+								<span class="fav-search-box">
+									<input type="search" class="fav-search-in" maxlength="20"
+                                           placeholder="Search" ng-model="searchText.name">
+								</span>
+                    </div>
+
+                    <ion-item ng-repeat="fav in arr | orderBy: '-date' | filter:searchText"
+                              ng-click="toggleGroup(fav)"
+                              class="item flag" ng-class="{active: isGroupShown(fav)}">
+                        <span class="favorite-list-name" >{{fav.name}}</span>
+                        <span class="favorite-list-date">{{fav.date | date : "MMM d, y 'at' h:mm a"}}</span>
+                        <i class="ion-chevron-right"></i>
+                        <label class="checkbox" ng-class="{active: fav.checked}">
+                            <input type="checkbox" ng-click="$event.stopPropagation();"
+                                   ng-model="fav.checked" >
+                        </label>
+                    </ion-item>
+                </ion-list>
+                <div class="item-divider"></div>
+
+                <div id="favoriteErrorMsg" ng-if="!arr.length">
+							<span class="favorite-error-span">Click on
+								<span class="bold-text">"Add Chat to Favorites" </span>
+								at the end of each session to start saving your talks with Watson here</span>
+                </div>
+            </div>
+
+            <div class="favorites-footer show" ng-class="{active: isClicked}" ng-hide="isFavorite">
+                <img class="user-pic left" id="imgTest" ng-src="{{user.pic}}"
+                     onerror="this.onerror=null;this.src='images/profile.png';" ng-click="slideInMenu();" />
+                <span class="favorite-footer-name">Teste</span>
+
+                <button class="button button-icon ion-gear-a favorite-btn"
+                        ng-click="activeButton(); $event.stopPropagation(); popover.show($event)"
+                        ng-class="{active: isActive}">
+                </button>
+            </div>
+            <div class="side-menu" ng-class="{active: isClicked}">
+                <button ng-click="slideInMenu()"
+                        class="button-icon ion-arrow-left-c close-user-detail">
+                </button>
+            </div>
+        </div>
+
+        <!--        CHAT SESSION - RIGHT PANEL      -->
+        <ion-content class="has-footer col-67 col-offset-25 col-center" id="chat-web"
+                     delegate-handle="userMessageScroll" overflow-scroll="true" >
+            <div class="watson-header">
+                <div class="header-title">
+                    <h2 class="header-span one">Watson
+                        <span class="header-span two">IT Help</span>
+                        <span class="header-span three"></span>
+                    </h2>
+
+                </div>
+            </div>
+
+            <!--            WATSON SCROLLER        -->
+            <div class="watson-bottom-chat" id="scrollDiv">
+                <div ng-if="isFavorite" class="favorite-detail-date">
+                    <span>{{favDate | date : "dd/MM/yyyy 'at' h:mma"}}</span>
+                </div>
+                <div ng-repeat="message in messages track by $index" class="message-wrapper"
+                     on-hold="onMessageHold($event, $index, message)" id="chat">
+                    <!--            WATSON ANSWERS SESSION          -->
+                    <div ng-if="message.userId === 'watson'">
+                        <img ng-click="viewProfile(message)" class="profile-pic left"
+                             ng-src="{{::watsonRobot.pic}}" onerror="onProfilePicError(this)" />
+                        <div class="chat-bubble left margin-bottom">
+                            <div class="message">
+                                <p ng-bind-html="message.text | nl2br" autolinker></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--            USER QUESTIONS SESSION        -->
+                    <div class="user-input"  ng-if="message.userId !== 'watson'">
+                        <div class="chat-bubble right margin-bottom">
+                            <div class="message">
+                                <p ng-bind-html="message.text | nl2br" autolinker></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--            WATSON FEEDBACK CHAT          -->
+                <div class="feedback-bubble" id="feedbackSession" ng-if="showFeedbackDiv && !isFavorite">
+                    <button class="button-medium button-clear button-stable feedback-button yes"
+                            ng-click="sendFeedback('positive')">
+                        <img ng-src="images/thumb-up.svg" />
+                    </button>
+                    <button class="feedback-button no button-medium button-clear button-stable"
+                            ng-click="sendFeedback('negative')">
+                        <img ng-src="images/thumb-down.svg" />
+                    </button>
+                </div>
+
+                <div class="feedback-bubble" id="finishSession" ng-if="showFinishDiv && !isFavorite">
+                    <div class="message-detail">
+                        <button class="button-medium button-clear button-stable feedback-button yes fix"
+                                ng-click="finishSession()">
+                            <img ng-src="images/keepSession.svg" />
+                        </button>
+                        <button class="feedback-button no button-medium button-clear button-stable reject"
+                                ng-click="keepSession()">
+                            <img ng-src="images/finishSession.svg" />
+                        </button>
+                    </div>
+                </div>
+
+                <!--            WATSON FAVORITE SESSION          -->
+                <div ng-init="favState" ng-click="favoriteMessage(favState)" id="favoriteDiv"
+                     class="button button-clear" ng-if="favs">
+                    <div class="favorites-line"></div>
+                    <i ng-class="{
+						'button-icon ion-ios-star-outline favorite-star' : !favState,
+						'button-icon ion-ios-star favorite-star' : favState
+						}">
+                    </i>
+                    <span class="favorite-span">Add Chat to Favorites</span>
+                </div>
+
+            </div>
+            <form name="sendMessageForm" novalidate>
+                <div class="bar-stable item-input-inset message-footer"
+                     id="chatFooter" ng-hide="isFavorite" keyboard-attach>
+                    <label class="item-input-wrapper">
+                        <textarea ng-model="input.message"
+                                  placeholder="Type your message to Watson..." rows="3"
+                                  required minlength="1" maxlength="600" msd-elastic id='msgField'>
+                        </textarea>
+                        <ios-spinner width="30" height="30" ng-if="isLoading" color="rgb(0,58,93)"></ios-spinner>
+                    </label>
+                    <div class="footer-btn-wrap" ng-class="{'active-btn': input.message && !disableChat}" >
+                        <button class="button-icon" type="submit"
+                                ng-disabled="!input.message || disableChat" id="msgSender">
+                            <i class="icon ion-ios-paperplane-outline footer-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </ion-content>
+    </div>
+
+    <div id="disclaimer">
+        <div>
+            No connection available
+        </div>
+    </div>
+    <div id="themes-disclaimer">
+        <div id="themes-header">
+            <img src="/images/watsonPic.svg" />
+            <h3 id="themes-intro">Hoje o Watson está preparado para responder os seguintes temas:</h3>
+        </div>
+        <div id="themes-content">
+        </div>
+        <div id="themes-action">
+            <div id="themes-details"></div>
+            <div>
+                <button id="close-disclaimer" class="action-button">Got it!</button>
+                <div>
+                    <input id="disclaimer-check" name="disclaimer-check" type="checkbox" />
+                    <label id="disclaimer-label" for="disclaimer-check">Não exibir temporariamente</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<img class="header-image-cio" src="images/ciom.png" />-->
+    <img class="background-logo one" src="images/watsonBackground.svg" />
+    <img class="background-logo two" src="images/watsonBackground.svg" />
+
+</ion-view>
+<script src="/libs/socket.io-client/socket.io.js"></script>
+
+<script src="./themes-disclaimer/dist/js/bundle.min.js"></script>
+<script defer src="lib/ionic/js/ionic.bundle.min.js" type="text/javascript"></script>
+<script defer src="lib/angular-elastic.js" type="text/javascript"></script>
+<script defer src="js/app.js" type="text/javascript"></script>
+
+<script defer src="/lib/dialog-box/dialog.script.js"></script>
+<script defer src="metrics/metrics.service.js" type="text/javascript"></script>
+<script defer src="login/login.factory.js" type="text/javascript"></script>
+<script defer src="lib/ionic.utils.js" type="text/javascript"></script>
+<script defer src="lib/Autolinker.min.js" type="text/javascript"></script>
+<script defer src="js/custom.directives.js" type="text/javascript"></script>
+<script defer src="chat/chat.controller.js" type="text/javascript"></script>
+<script defer src="chat/chat.factory.js" type="text/javascript"></script>
+<script defer src="eula/eula.controller.js" type="text/javascript"></script>
+<script defer src="favorites/favorites.controller.js"  type="text/javascript"></script>
+<script defer src="favorites/favorites.factory.js" type="text/javascript"></script>
+<script defer src="ratings/ratings.controller.js" type="text/javascript"></script>
+<script defer src="ratings/ratings.factory.js" type="text/javascript"></script>
+<script defer src="lib/ng-file-upload/dist/ng-file-upload.min.js"></script>
+<script defer src="lib/ionic-rating/ionic-rating.js"></script>
+<script defer src="lib/ng-css-ios-spinner-master/dist/ios-spinner.directive.js"></script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-70908505-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<script>
+    (function () {
+        "use strict";
+
+        //date
+        var sessionTimeLimit = 1000*60*2 //2 minutes
+//        var sessionTimeLimit = 5000 //test
+        var now = new Date();
+        console.log(now.getTime())
+
+        var savedAccessDateTime = localStorage.getItem("lastAccessDateTime");
+
+        if(savedAccessDateTime){
+            localStorage.setItem("lastAccessDateTime", now.getTime());
+            if(Math.abs(now.getTime() - savedAccessDateTime) > sessionTimeLimit){
+                saveAccess(now)
+            }
+        }else{
+            localStorage.setItem("lastAccessDateTime", now.getTime());
+            saveAccess(now);
+        }
+
+        function saveAccess(now) {
+            console.log("Saving access");
+
+            getUserCountry().then(function(country) {
+//                var username = document.querySelector('#username').innerHTML;
+
+                // save cloudant
+                var data = "country=" + country +  "&browserLanguage="+navigator.language;
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.addEventListener("readystatechange", function () {
+                    if (this.readyState === 4) {
+                        console.log(this.responseText);
+                    }
+                });
+
+                xhr.open("POST", "/saveAccess");
+                xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                xhr.setRequestHeader("cache-control", "no-cache");
+
+                xhr.send(data);
+
+            }).catch(function(err) {
+                console.log("Couldn't save the access because the app wasn't able to get the country.");
+            });
+
+        }
+
+        function getUserCountry() {
+            return new Promise(function(resolve, reject) {
+
+                var data = null;
+                var xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+
+                xhr.addEventListener("readystatechange", function () {
+                    if (this.readyState === 4) {
+                        console.log(this.responseText);
+                        resolve (JSON.parse(this.responseText).country);
+                    }
+                });
+                xhr.open("GET", "https://ipinfo.io/json");
+                xhr.send(data);
+
+            });
+        }
+
+        var loggedUser = document.getElementById('username').textContent,
+                errorMessage;
+
+
+        (function buildErrorMessage (user) {
+            var regex = new RegExp(/([@])\w+/i),
+                    locale = regex.exec(user)[0].slice(1, 3);
+
+            if (!errorMessage) {
+                switch (locale) {
+                    case 'br':
+                        errorMessage = "Watson não está disponível! Por favor contate seu HelpDesk local através do chat http://ibm.biz/ITHC-Support"
+                        break; //ok
+                    case 'co':
+                        errorMessage = "Watson no está disponible! Por favor contacta a tu HelpDesk local llamando al Teléfono +57-1-390-1911 or TieLine 835-1911. También puedes abrir un chat o un webticket desde http://ibm.biz/ITHC-Support";
+                        break; //ok
+                    case 'cl':
+                        errorMessage = "Watson no está disponible! Por favor contacta a tu HelpDesk local llamando al Teléfono +54-11-5286-3000 or TieLine 845-3000. También puedes abrir un chat o un webticket desde http://ibm.biz/ITHC-Support";
+                        break; //ok
+                    case 'ec':
+                        errorMessage = "Watson no está disponible! Por favor contacta a tu HelpDesk local llamando al Teléfono +59-322-565100 (Ext 5134) or TieLine 381-5136. También puedes abrir un chat o un webticket desde http://ibm.biz/ITHC-Support";
+                        break; //ok
+                    case 'mx':
+                        errorMessage = "Watson no está disponible! Por favor contacta a tu HelpDesk local llamando al Teléfono +52-5270-5959 or TieLine 879-5959. También puedes abrir un chat o un webticket desde http://ibm.biz/ITHC-Support";
+                        break; //ok
+                    case 'ur':
+                        errorMessage = "Watson no está disponible! Por favor contacta a tu HelpDesk local llamando al Teléfono +54-11-5286-3000 or TieLine 761-3000. También puedes abrir un chat o un webticket desde http://ibm.biz/ITHC-Support";
+                        break; //ok
+                    case 'pe':
+                        errorMessage = "Watson no está disponible! Por favor contacta a tu HelpDesk local llamando al Teléfono +51-1-625-6911 or TieLine 836-6911. También puedes abrir un chat o un webticket desde http://ibm.biz/ITHC-Support";
+                        break; //ok
+                    case 've':
+                        errorMessage = "Watson no está disponible! Por favor contacta a tu HelpDesk local llamando al Teléfono +58-212-908-8911 or TieLine 777-8911. También puedes abrir un chat o un webticket desde http://ibm.biz/ITHC-Support";
+                        break; //OK
+                    case 'ar':
+                        errorMessage = "Watson no está disponible! Por favor contacta a tu HelpDesk local llamando al Teléfono +54-11-5286-3000 or TieLine 840-3000. También puedes abrir un chat o un webticket desde http://ibm.biz/ITHC-Support";
+                        break;
+                    default:
+                        errorMessage = "Watson no está disponible! Por favor contacta a tu HelpDesk local. También puedes abrir un chat o un webticket desde http://ibm.biz/ITHC-Support";
+                        break;
+                }
+            }
+
+            return errorMessage;
+        }(loggedUser));
+
+        function checkLocale (user) {
+            var regex = new RegExp(/([@])\w+/i);
+            user = regex.exec(user)[0].slice(1, 3);
+            var message = buildErrorMessage(user);
+            return user === 'br' ? 'pt' : 'es';
+        }
+
+        var mainElement = document.getElementById('blur'),
+                disclaimerContainer = document.getElementById('disclaimer'),
+                hasConnection = true;
+
+        function validateConnection () {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (xhttp.readyState === 4 && xhttp.status === 0) {
+                    if (!mainElement.classList.contains('blur')) {
+                        mainElement.classList.add('blur');
+                        document.querySelector('#disclaimer div').innerHTML = 'No connection available';
+                        disclaimerContainer.classList.add('show-disclaimer');
+                    }
+                    hasConnection = false;
+                    return false;
+                } else {
+                    disclaimerContainer.classList.remove('show-disclaimer');
+                    mainElement.classList.remove('blur');
+                    hasConnection = true;
+                    return true;
+                }
+            };
+
+            xhttp.open("HEAD", "/x", true);
+            xhttp.send();
+        }
+
+        var socket = io.connect(document.location.href);
+        socket.on('connect', function (response) {
+
+            var nlcControl = 0;
+            validateConnection();
+
+            try {
+                clearInterval(interval);
+            } catch (e) {
+                console.log('interval not set');
+            }
+            var interval = window.setInterval(function () {
+                if (hasConnection) {
+                    socket.emit('check_conversation', {
+                        "locale": localStorage.getItem('locale') || checkLocale(loggedUser)
+                    })
+                }
+            }, 5000);
+
+            socket.on('nlc_out', function (err) {
+                console.log([err.code, err.description].join(' - '));
+                nlcControl += 1;
+
+                if (nlcControl >= 2 && hasConnection) {
+                    mainElement.classList.add('blur');
+                    document.querySelector('#disclaimer div').innerHTML = errorMessage;
+                    disclaimerContainer.classList.add('show-disclaimer');
+                }
+            });
+
+            socket.on('nlc_ok', function () {
+                disclaimerContainer.classList.remove('show-disclaimer');
+                mainElement.classList.remove('blur');
+                nlcControl = 0;
+
+            })
+        });
+        socket.on('disconnect', function (response) {
+            validateConnection();
+        });
+        socket.on('connect_error', function () {
+            if (!hasConnection) {
+                validateConnection();
+            }
+
+        });
+
+    }());
+
+</script>
+</body>
+</html>

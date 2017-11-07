@@ -1,0 +1,157 @@
+aside#dialog {
+    width: auto;
+    max-width: 60%;
+    height: 350px;
+    background-color: snow;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    animation: p-tst .3s ease-out forwards;
+    margin: auto;
+    box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, .1);
+    z-index: 5;
+    overflow: scroll;
+    border-radius: 4px;
+}
+
+aside#dialog header {
+    text-align: center;
+    height: 50px;
+    position: fixed;
+    display: flex;
+    z-index: 5;
+    width: 100%;
+    align-items: center;
+    background-color: rgba(16, 93, 146, 1);
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, .3);
+    padding: 20px;
+    color: white !important;
+}
+
+aside#dialog header h2 {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0;
+    font-size: 20px;
+    color: inherit;
+}
+
+aside#dialog header div {
+    flex: 3;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+aside#dialog header > button {
+    border: 0;
+    background: transparent;
+    border-radius: 50%;
+    z-index: 10;
+    font-weight: 400;
+    transform: translate3d(0, 0, 0);
+    color: white;
+    text-align: center;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    box-sizing: content-box;
+    vertical-align: middle;
+}
+
+#dialog > header > div > button.ladda-button > span.ladda-spinner {
+    top: 0 !important;
+}
+
+aside#dialog header > button:hover {
+    background-color: #E45B46;
+    color: #FDF6F5;
+}
+
+aside#dialog main {
+    flex: 1;
+    background-color: snow;
+    max-height: 450px;
+    margin-top: 50px;
+    height: calc(100% - 50px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    justify-content: space-around;
+    padding: 20px 50px;
+
+}
+
+aside#dialog main h3 {
+    text-align: center;
+    font-size: 17px;
+    margin: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    min-width: 130px;
+    width: 100%;
+
+}
+
+aside#dialog main section {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 150px;
+    width: 100%;
+}
+
+aside#dialog main section textarea {
+    background-color: white !important;
+    border: 1px solid gainsboro;
+    resize: none;
+    padding: 5px;
+    letter-spacing: 1px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .1);
+}
+
+
+aside#dialog main section button#send-ticket {
+    width: 100px;
+    align-self: flex-end;
+    margin: 10px 0;
+    white-space: nowrap;
+    border: 0;
+    background: rgba(16, 93, 146, 1);
+    color: white;
+    height: 50px;
+}
+
+aside#dialog main section button#send-ticket[disabled] {
+    background-color: rgba(192, 192, 192, 1);
+}
+
+
+
+@keyframes a-tst {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes p-tst {
+    from {
+        transform: translate3d(0, 300px, 0);
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+

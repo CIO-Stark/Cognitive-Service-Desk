@@ -1,0 +1,16 @@
+<span id="menu">
+    <button id="menu-btn" class="btn-floating waves-effect">
+        <img src="/assets/raw/menu.svg"  alt="menu-btn" />
+    </button>
+</span>
+<span id="main-nav">
+    <h1>Ticket system</h1>
+</span>
+<span id="user">
+
+    <% if (user) { %>
+        <p id="username"><%= user.email %></p>
+    <% } %>
+
+    <img src="/assets/raw/user-icon.svg" />
+</span>

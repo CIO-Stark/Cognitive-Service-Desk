@@ -1,0 +1,768 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "List of every backend API of the Watson IT Help. Through this page you see a description of the parameters of each API route and can test them as well.",
+        "version": "1.0.0",
+        "title": "Watson IT Help Beta | API Explorer"
+    },
+    "host": "watsonithelpbeta.mybluemix.net",
+    "basePath": "/",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/x-www-form-urlencoded",
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/security/token": {
+            "post": {
+                "tags": [
+                    "Security"
+                ],
+                "summary": "Retrieves a secret token based on default API Key",
+                "parameters": [
+                    {
+                        "name": "apikey",
+                        "in": "formData",
+                        "description": "Provide the default Api Key in Base64.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Security"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/profile/set": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Definition of user profile",
+                "parameters": [
+                    {
+                        "name": "first_name",
+                        "in": "formData",
+                        "description": "Provide the First Name of the User",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Provide user email. e.g. joe@us.ibm.com",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Profile"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/favorites/bulk": {
+            "post": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Bulk favorites from Cloudant",
+                "parameters": [
+                    {
+                        "name": "document",
+                        "in": "formData",
+                        "description": "Provide the First Name of the User",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Favorites"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/favorites/add": {
+            "post": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Add favorites to Cloudant",
+                "parameters": [
+                    {
+                        "name": "chat",
+                        "in": "formData",
+                        "description": "Provide the First Name of the User",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Favorites"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/favorites/remove": {
+            "post": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Remove favorites from Cloudant",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "formData",
+                        "description": "Provide a valid document id from Cloudant",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "rev",
+                        "in": "formData",
+                        "description": "Provide a valid document version from Cloudant",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Favorites-remove"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/favorites/search": {
+            "post": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Retrieve favorites from Cloudant",
+                "parameters": [
+                    {
+                        "name": "intranet_id",
+                        "in": "formData",
+                        "description": "Provide the valid intranet id",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Favorites-Search"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/feedback/email": {
+            "post": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Give a Feedback feature",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "intranet id",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "deviceid",
+                        "in": "formData",
+                        "description": "device id",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "deviceos",
+                        "in": "formData",
+                        "description": "Operational System",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "attachments",
+                        "in": "formData",
+                        "description": "Attachments",
+                        "required": false,
+                        "type": "file"
+                    },
+                    {
+                        "name": "comments",
+                        "in": "formData",
+                        "description": "Comments",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "category",
+                        "in": "formData",
+                        "description": "Category - Issue or Suggestion",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Feedback"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/analytics/mobile": {
+            "post": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Store metrics regarding Mobile usage",
+                "parameters": [
+                    {
+                        "name": "userid",
+                        "in": "formData",
+                        "description": "User ID",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "country",
+                        "in": "formData",
+                        "description": "Country name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "chatusagetime",
+                        "in": "formData",
+                        "description": "Time of chat session in seconds",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "os",
+                        "in": "formData",
+                        "description": "Device Operational System",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "model",
+                        "in": "formData",
+                        "description": "Device Model",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Analytics-Mobile"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/analytics/feedback": {
+            "post": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Store an user interaction with feedback in Web or Mobile version",
+                "parameters": [
+                    {
+                        "name": "client_id",
+                        "in": "formData",
+                        "description": "Dialog client id",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "conversation_id",
+                        "in": "formData",
+                        "description": "Dialog conversation id",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "userid",
+                        "in": "formData",
+                        "description": "User ID",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "platform",
+                        "in": "formData",
+                        "description": "Platform - Web or Mobile",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "lan",
+                        "in": "formData",
+                        "description": "Language - PT= 1 ES= 2",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "question",
+                        "in": "formData",
+                        "description": "User question",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "confidence",
+                        "in": "formData",
+                        "description": "Confidence level of the top class - 0 to 100",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "feed1",
+                        "in": "formData",
+                        "description": "First feedback 0 or 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "cluster1",
+                        "in": "formData",
+                        "description": "Class Name of the 1st feedback",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "feed2",
+                        "in": "formData",
+                        "description": "Second feedback -1, 0 or 1",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "cluster2",
+                        "in": "formData",
+                        "description": "Class Name of the 2nd feedback",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "neg_fdbk_comment",
+                        "in": "formData",
+                        "description": "User comment about a negative feedback",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "employeeCountry",
+                        "in": "formData",
+                        "description": "br for Brazil",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Analytics-Feedback"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/analytics/rating": {
+            "post": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Store the value of rating provided by users",
+                "parameters": [
+                    {
+                        "name": "userid",
+                        "in": "formData",
+                        "description": "intranet id",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "rating",
+                        "in": "formData",
+                        "description": "Rating",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "client_id",
+                        "in": "formData",
+                        "description": "Client ID from Dialog",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "conversation_id",
+                        "in": "formData",
+                        "description": "Conversation ID from Dialog",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "platform",
+                        "in": "formData",
+                        "description": "Plataform - Web or Mobile",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Analytics-Rating"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/conversation/{langId}": {
+            "post": {
+                "tags": [
+                    "Conversation"
+                ],
+                "summary": "How to establish a conversation and obtain answers",
+                "parameters": [
+                    {
+                        "name": "langId",
+                        "in": "path",
+                        "description": "pt or es",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "apiKey",
+                        "in": "formData",
+                        "description": "Secret Key - Generated by /security/token API",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "client_id",
+                        "in": "formData",
+                        "description": "Client ID from Dialog",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "conversation_id",
+                        "in": "formData",
+                        "description": "Conversation ID from Dialog",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "input",
+                        "in": "formData",
+                        "description": "User input",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Conversation"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Security": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "secretkey": {
+                    "type": "string"
+                }
+            }
+        },
+        "Profile": {
+            "type": "object",
+            "properties": {
+                "client_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name_values": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Profile-name_values"
+                    }
+                }
+            }
+        },
+        "Profile-name_values": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "values": {
+                    "type": "string"
+                }
+            }
+        },
+        "Favorites": {
+            "type": "object",
+            "properties": {
+                "ok": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "rev": {
+                    "type": "string"
+                }
+            }
+        },
+        "Favorites-Search": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "_rev": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "chat": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Favorites-Search_chat"
+                    }
+                }
+            }
+        },
+        "Favorites-Search_chat": {
+            "type": "object",
+            "properties": {
+                "text": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "Favorites-remove": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "Feedback": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "Analytics-Mobile": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "Analytics-Rating": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "Analytics-Feedback": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "Conversation": {
+            "type": "object",
+            "properties": {
+                "client_id": {
+                    "type": "string"
+                },
+                "conversation_id": {
+                    "type": "string"
+                },
+                "dialog_id": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": "string"
+                },
+                "input": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "class_id": {
+                    "type": "string"
+                },
+                "cluster": {
+                    "type": "string"
+                },
+                "response": {
+                    "type": "string"
+                }
+            }
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

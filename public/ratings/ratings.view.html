@@ -1,0 +1,75 @@
+<ion-modal-view ng-controller="RatingsController as ratingCtrl" 
+				cache-view="false" class="rating-modal">
+   
+	<div class="bar bar-stable newDesign">
+		<button ng-click="closeRatingModal();"
+			ng-disabled="sendingFeedback" 
+			class="button button-clear">
+			Cancel
+		</button>
+		<div class="title">Give a Feedback</div>
+		<button ng-click="sendFeedback()"
+			ng-disabled="sendingFeedback || !ratingObj.userinput || !ratingObj.optSelected"
+			class="button button-clear">
+			Send
+		</button>
+	</div>
+	
+    <ion-content has-bouncing="false" scroll="false">
+		<div ng-show="sendingFeedback" class="rating-backdrop"></div>
+
+		<ion-spinner ng-show="sendingFeedback" class="rating-spinner" ></ion-spinner>
+
+		<div class="error-div" id="error-div" ng-show="ratingObj.errorMsg" ng-bind="ratingObj.errorMsg"></div>
+
+		<div class="left-session">
+			<span class="select-option-span">Select a type: </span>
+			<button class="button button-clear option-selected"
+					ng-click="selectFeedback('issue')"
+					ng-class="{active: feedbackSelected('issue')}">Report a Problem</button>
+			<button class="button button-clear option-selected"
+					ng-click="selectFeedback('hint')"
+					ng-class="{active: feedbackSelected('hint')}">Make a Suggestion</button>
+			<textarea class="user-comments" ng-model="ratingObj.userinput"
+					  ng-if="optionSelected"
+					  ng-trim="false" maxlength="500" 
+					  placeholder="Briefly explain what happened (on your native language is fine)"></textarea>
+			<span class="input-length-count"
+				ng-if="optionSelected">Max: {{ratingObj.userinput.length + 0}}/500 characters</span>
+		</div>
+		
+		<div class="right-session">
+			<span class="image-info-span">Add screenshots <span>(OPTIONAL):</span> </span>
+
+			<input type="file" accept="image/*" id="file" on-read-file="showContent($fileContent)" />
+			<div class="thumb-pool">
+				<span class="thumb-span">	
+					<ion-spinner class="thumb-spinner" 
+								 ng-show="thumbsLoading[0]"></ion-spinner>
+					<button class="button button-icon ion-ios-close remove-thumb "
+							ng-click="removeThumb(0)"
+							ng-show="thumbsActive[0]"></button>
+					<img ng-click="uploadImage(0)" class="thumbnail" id="image-0" src="/images/Pic1.svg" />
+				</span>
+				<span class="thumb-span">	
+					<ion-spinner  class="thumb-spinner" 
+								 ng-show="thumbsLoading[1]"></ion-spinner>
+						<button class="button button-icon ion-ios-close remove-thumb "
+							ng-click="removeThumb(1)"
+							ng-show="thumbsActive[1]"></button>
+					<img ng-click="uploadImage(1)" class="thumbnail" id="image-1" src="/images/Pic1.svg" />
+				</span>
+				<span class="thumb-span">	
+					<ion-spinner  class="thumb-spinner last-load"
+								 ng-show="thumbsLoading[2]"></ion-spinner>
+							<button class="button button-icon ion-ios-close remove-thumb last-btn"
+							ng-click="removeThumb(2)"
+							ng-show="thumbsActive[2]"></button>
+					<img ng-click="uploadImage(2)" class="thumbnail last-thumb"  src="/images/Pic1.svg" id="image-2" />	
+				</span>
+				</div>
+				<span class="image-length-warning">Max: 03 pictures</span>
+		</div>
+	</ion-content>
+	
+</ion-modal-view>

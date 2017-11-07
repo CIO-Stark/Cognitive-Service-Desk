@@ -1,0 +1,191 @@
+body{
+    font-family: Arial;
+    padding: 0px;
+    margin: 0px;
+}
+
+
+#container{
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f6f6f6;
+}
+
+
+#topBar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #425159;
+    -webkit-box-shadow: 0px 10px 96px 16px rgba(0,0,0,0.16);
+    -moz-box-shadow: 0px 10px 96px 16px rgba(0,0,0,0.16);
+    box-shadow: 0px 10px 96px 16px rgba(0,0,0,0.16);
+}
+
+#panel{
+    margin: 30px 20px 0px 20px;
+    -webkit-box-shadow: 1px 1px 27px -10px rgba(0,0,0,0.25);
+    -moz-box-shadow:  1px 1px 27px -10px rgba(0,0,0,0.25);
+    box-shadow:  1px 1px 27px -10px rgba(0,0,0,0.25);
+    border: 1px solid gainsboro;
+    background-color: white;
+    width: calc(100% - 84px);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 6px;
+}
+
+#datePanel{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+input{
+    margin: 8px;
+}
+
+#topBar > h1 >span{
+    color: #4975ee;
+}
+
+.separator{
+    width: 1px;
+    height: auto;
+    margin: 0px 40px 0px 40px;
+    background-color: #c6ccbf;
+}
+
+#topBar h1{
+    color: white;
+}
+
+
+.es{
+    margin: 6px 0px 0px 0px;
+    color: #d80000;
+}
+
+.pt{
+    margin: 6px 0px 0px 0px;
+    color: green;
+}
+
+#charts-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+}
+
+#charts-container:last-child{
+    margin-bottom: 24px;
+
+}
+
+.donut-wrapper{
+    background-color: white;
+    border-radius: 6px;
+    width: 100%;
+    padding: 22px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+#charts-container > .metric-wrapper {
+    background-color: white;
+    border-radius: 6px;
+    width: calc(100% - 40px);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.module{
+    margin: 30px 20px 0px 20px;
+    -webkit-box-shadow: 1px 1px 27px -10px rgba(0,0,0,0.25);
+    -moz-box-shadow:  1px 1px 27px -10px rgba(0,0,0,0.25);
+    box-shadow:  1px 1px 27px -10px rgba(0,0,0,0.25);
+    border: 1px solid gainsboro;
+}
+
+#charts-container > .metric-wrapper > .metric {
+    flex: 1;
+    min-width: 45%;
+    max-height: 100%;
+    max-width: 100%;
+    position: relative;
+    padding: 10px 80px 10px 80px;
+    margin: 2px;
+    box-sizing: border-box;
+}
+
+#charts-container > .metric-wrapper > .donut{
+    max-height: 600px;
+    max-width: 600px;
+}
+
+#charts-container > .metric-wrapper > label {
+    margin: 10px 0px 0px 0px;
+}
+
+#charts-container > .metric-wrapper > h3 {
+    cursor: default;
+    color: #0c60ee;
+    font-size: 1.5em;
+    margin: 0px;
+}
+
+#panel > h3 {
+    cursor: help;
+    color: #ff880b;
+    font-size: 1.5em;
+    margin: 0px;
+}
+
+canvas {
+    /*max-height: 400px !important;*/
+    /*max-width: 90% !important;*/
+}
+
+
+@media screen and (max-width: 750px){
+    .donut-wrapper{
+        flex-direction: column;
+        align-items: center;
+    }
+    .donut-wrapper > .separator{
+        width: 100%;
+        height: 1px;
+        margin: 40px 0px 40px 0px;
+    }
+
+    .donut canvas{
+        max-height: 250px !important;
+        max-width: 250px !important;
+        min-height: 200px !important;
+        min-width: 200px !important;
+    }
+
+}
+
+@media screen and (max-width: 500px){
+    #datePanel{
+        flex-direction: column;
+    }
+}
