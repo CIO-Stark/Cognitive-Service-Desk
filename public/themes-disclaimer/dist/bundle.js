@@ -52,11 +52,11 @@ module.exports=/**
             "es": "Fase Beta de Windows"
             }
     },{
-        "themeName": "Contabilidade",
-        "themeImgSrc": "images/disclaimer/contabil.png",
+        "themeName": "VPN",
+        "themeImgSrc": "images/disclaimer/att.png",
         "themeAlt": "vpnLogo",
         "themeDescription": {
-            "pt": "Pode me perguntar qualquer coisa sobre Contabilidade geral.",
+            "pt": "Pode me perguntar qualquer coisa sobre AT&T, desde a gestão de acessos, até por como configurar ou mesmo problemas que possam ocorrer no AT&T.",
             "es": "Puedes consultarme sobre la gestión de los accesos para AT&T (Cómo solicitar tu usuario), la configuración necesaria para la conexión y podemos revisar los inconvenientes que tengas durante la conexión a la red IBM o de su uso en Windows 7."
         }
     }, {

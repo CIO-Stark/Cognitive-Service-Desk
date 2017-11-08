@@ -2,7 +2,8 @@
 (function () {
     'use strict';
 
-    angular.module('login.service', []).factory('LoginService', ['$rootScope', '$state', '$localstorage', '$http', '$q', 'userControl', 'defaultMessages', '$ionicHistory', function LoginService($rootScope, $state, $localstorage, $http, $q, userControl, defaultMessages, $ionicHistory) {
+    angular.module('login.service', []).factory('LoginService', ['$rootScope', '$state', '$localstorage', '$http', '$q', 'userControl', 'defaultMessages', '$ionicHistory', 
+        function LoginService($rootScope, $state, $localstorage, $http, $q, userControl, defaultMessages, $ionicHistory) {
 
 
 
@@ -21,19 +22,62 @@
             }
         }
 
-        
+        /**
+        * @Intranet ID {string} arg1
+        **/
+        function getBluePagesInfo(intranetId) {
+            var proxy = 'https://faces.tap.ibm.com/api/find/',
+                req = {
+                    method: 'POST',
+                    async: false,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    transformRequest: function (obj) {
+                        var str = [],
+                            p;
+                        for (p in obj) {
+                            if (obj.hasOwnProperty(p)) {
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                                return str.join("&");
+                            }
+                        }
+                    },
+                    url: proxy,
+                    timeout: 10000,
+                    data: {
+                        q: intranetId
+                    }
+                };
+
+            $http(req)
+                .success(function (data) {
+                    userControl.setUserUid(data[0].uid);
+                    userControl.setFormalName(data[0].name);
+                    $localstorage.set('uid', data[0].uid);
+                    $localstorage.set('formalName', data[0].name);
+                    return data[0].name;
+                }).error(function (data, status) {
+                    return 'IBMer';
+                });
+
+        }
              /**
         * @Intranet ID {string} arg1
         **/
-        function validateSession(username) {
+        function validateSession(username, fullName) {
+            
+            //getBluePagesInfo(username);
             var deferred = $q.defer(),
                 user = {
-                    _id: 'xxxxxxxx',
-                    //pic: $localstorage.get('userPhoto') || ['http://faces.tap.ibm.com:10000/image/', username, '.jpg'].join(''),
-                    username: 'teste'
+                    _id: '',
+                    pic: '',
+                    username: username,
+                    name: ''
                 };
 
+            user.name = fullName;
+                
             userControl.setUser(user);
+            
             $localstorage.set('session', username);
             deferred.resolve('success');
 
@@ -47,13 +91,14 @@
             $localstorage.delete('formalName');
             $localstorage.delete('locale');
             $localstorage.delete('prefix');
-            window.location.href = 'https://watsonithelpbeta.mybluemix.net/logout';
+            
         }
 
         return {
             validateSession : validateSession,
             logout : logout,
-            httpStatusHandler : httpStatusHandler
+            httpStatusHandler : httpStatusHandler,
+            getBluePagesInfo : getBluePagesInfo
         };
 
     }]);

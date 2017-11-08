@@ -2,13 +2,13 @@
 <html ngCloak>
 <head>
     <meta charset="utf-8">
-    <title>Watson IT Help for Latin America</title>
+    <title>Cognitive Service Desk</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="copyright" href="http://www.ibm.com/br-pt/">
     <link rel="shortcut icon" href="images/watson-favicon.ico" type="image/x-icon">
     <link rel="icon" href="images/watson-favicon.ico" type="image/x-icon">
     <link href="lib/ionic/css/ionic.min.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/menu.css" rel="stylesheet" type="text/css">
     <link href="css/themes-disclaimer.style.css" rel="stylesheet" type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,400" rel="stylesheet">
     <!--<link href="css/dist/style.min.css" rel="stylesheet" type="text/css">-->
@@ -16,19 +16,25 @@
 </head>
 
 <body data-ng-app="watsonchat" ng-cloak data-ng-csp ng-controller="ChatController">
-<span class="hidden-username" id="username">Usuário Teste</span>
-<span class="hidden-username" id="token"><%= token %></span>
+<span class="hidden-username" id="username"><%= user.username %></span>
+<span class="hidden-username" id="userFullName"><%= user.name %></span>
+
 <ion-view id="userMessagesView" view-title="Watson IT Help"
           hide-back-button="true" hide-nav-bar="true">
 
 
     <div class="wrapper-web" id="blur">
-        <div ng-controller="FavoritesController as FavCtrl">
+        <div id="hamb-menu" ng-class="{ 'open': menuOpen }" ng-click="menuOpen = !menuOpen">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="sidebar" ng-class="{ 'open': menuOpen }" ng-controller="FavoritesController as FavCtrl">
             <div class="web-tst col-center col user-detail" ng-class="{active: isClicked}">
                 <div class="user-detail-info">
                     <img class="user-pic larger" ng-src="{{user.pic}}"
                          onerror="this.onerror=null;this.src='images/profile.png';"/>
-                    <span class="user-detail-name">Teste</span>
+                    <span class="user-detail-name">{{user.formalName}}</span>
                     <span class="user-detail-job">{{user.uid}}</span>
                 </div>
             </div>
@@ -60,7 +66,7 @@
                                            placeholder="Search" ng-model="searchText.name">
 								</span>
                     </div>
-
+                    <!-- toggle favorities bar -->
                     <ion-item ng-repeat="fav in arr | orderBy: '-date' | filter:searchText"
                               ng-click="toggleGroup(fav)"
                               class="item flag" ng-class="{active: isGroupShown(fav)}">
@@ -72,43 +78,56 @@
                                    ng-model="fav.checked" >
                         </label>
                     </ion-item>
+
+                    
                 </ion-list>
                 <div class="item-divider"></div>
 
+                
+
                 <div id="favoriteErrorMsg" ng-if="!arr.length">
-							<span class="favorite-error-span">Click on
-								<span class="bold-text">"Add Chat to Favorites" </span>
-								at the end of each session to start saving your talks with Watson here</span>
+							<span class="favorite-error-span">Selecione 
+								<span class="bold-text">"Adicionar Chat aos favoritos" </span>
+								ao final de cada sessão para salvar suas conversas com Watson aqui</span>
+                </div>
+
+                <!-- intents help bar -->
+                <div id="intentHelpMsg" >
+                    <span class="intentHelpMsg-span" ng-click="toggleIntents()" ng-show="false">Ajuda para o
+                        "<span class="bold-text clickable is-red underline-onhover">tópico atual</span>"
+                    </span>
+                </div>
+                
+
+                <div class="favorites-footer show" ng-class="{active: isClicked}" ng-hide="isFavorite">
+                    <img class="user-pic left" id="imgTest" ng-src="{{user.pic}}"
+                        onerror="this.onerror=null;this.src='images/profile.png';" ng-click="slideInMenu();" />
+                    <span class="favorite-footer-name">{{user.name}}</span>
+
+                    <button class="button button-icon ion-gear-a favorite-btn"
+                            ng-click="activeButton(); $event.stopPropagation(); popover.show($event)"
+                            ng-class="{active: isActive}">
+                    </button>
+                </div>
+                <div class="side-menu" ng-class="{active: isClicked}">
+                    <button ng-click="slideInMenu()"
+                            class="button-icon ion-arrow-left-c close-user-detail">
+                    </button>
                 </div>
             </div>
 
-            <div class="favorites-footer show" ng-class="{active: isClicked}" ng-hide="isFavorite">
-                <img class="user-pic left" id="imgTest" ng-src="{{user.pic}}"
-                     onerror="this.onerror=null;this.src='images/profile.png';" ng-click="slideInMenu();" />
-                <span class="favorite-footer-name">Teste</span>
-
-                <button class="button button-icon ion-gear-a favorite-btn"
-                        ng-click="activeButton(); $event.stopPropagation(); popover.show($event)"
-                        ng-class="{active: isActive}">
-                </button>
-            </div>
-            <div class="side-menu" ng-class="{active: isClicked}">
-                <button ng-click="slideInMenu()"
-                        class="button-icon ion-arrow-left-c close-user-detail">
-                </button>
-            </div>
+            
         </div>
 
         <!--        CHAT SESSION - RIGHT PANEL      -->
-        <ion-content class="has-footer col-67 col-offset-25 col-center" id="chat-web"
+        <ion-content class="has-footer col-67 col-offset-25 col-center full-width-on-mobile" id="chat-web"
                      delegate-handle="userMessageScroll" overflow-scroll="true" >
             <div class="watson-header">
                 <div class="header-title">
-                    <h2 class="header-span one">Watson
-                        <span class="header-span two">IT Help</span>
-                        <span class="header-span three"></span>
+                    <h2 class="header-span one">Cognitive
+                        <span class="header-span one hide-on-small-screens">Service Desk</span>
+                        <span class="header-span one hide-on-small-screens"></span>
                     </h2>
-
                 </div>
             </div>
 
@@ -125,7 +144,10 @@
                              ng-src="{{::watsonRobot.pic}}" onerror="onProfilePicError(this)" />
                         <div class="chat-bubble left margin-bottom">
                             <div class="message">
-                                <p ng-bind-html="message.text | nl2br" autolinker></p>
+                                <!-- <p ng-bind-html="message.text | nl2br" autolinker></p> -->
+                                <!-- <div ng-bind-html="trustContent(message.text)"></div> -->
+                                <p class="message-container" compile="message.text"></p>
+
                             </div>
                         </div>
                     </div>
@@ -139,16 +161,25 @@
                     </div>
                 </div>
 
+                <div ng-show="isIntentHelpView" class="favorite-detail-date">
+                    <p compile="intentsHelp" class="intentsHelp message-container"></p>
+                </div>
+
                 <!--            WATSON FEEDBACK CHAT          -->
                 <div class="feedback-bubble" id="feedbackSession" ng-if="showFeedbackDiv && !isFavorite">
                     <button class="button-medium button-clear button-stable feedback-button yes"
                             ng-click="sendFeedback('positive')">
-                        <img ng-src="images/thumb-up.svg" />
+                        <img  title="Positivo" ng-src="images/thumb-up.svg" />
                     </button>
                     <button class="feedback-button no button-medium button-clear button-stable"
                             ng-click="sendFeedback('negative')">
-                        <img ng-src="images/thumb-down.svg" />
+                        <img title="Negativo" ng-src="images/thumb-down.svg" />
                     </button>
+
+                    <!-- <button class="feedback-button no button-medium button-clear button-stable"
+                            ng-click="sendFeedback('neutral')">
+                        <span class="neutral-feedback"></span>
+                    </button> -->
                 </div>
 
                 <div class="feedback-bubble" id="finishSession" ng-if="showFinishDiv && !isFavorite">
@@ -173,16 +204,18 @@
 						'button-icon ion-ios-star favorite-star' : favState
 						}">
                     </i>
-                    <span class="favorite-span">Add Chat to Favorites</span>
+                    <span class="favorite-span">Adcionar este chat aos favoritos</span>
                 </div>
 
             </div>
             <form name="sendMessageForm" novalidate>
                 <div class="bar-stable item-input-inset message-footer"
                      id="chatFooter" ng-hide="isFavorite" keyboard-attach>
+                     
+
                     <label class="item-input-wrapper">
                         <textarea ng-model="input.message"
-                                  placeholder="Type your message to Watson..." rows="3"
+                                  placeholder="Qual sua pergunta?" rows="3"
                                   required minlength="1" maxlength="600" msd-elastic id='msgField'>
                         </textarea>
                         <ios-spinner width="30" height="30" ng-if="isLoading" color="rgb(0,58,93)"></ios-spinner>
@@ -211,6 +244,24 @@
         <div id="themes-content">
         </div>
         <div id="themes-action">
+            <div class="feedback-explanation">
+                <p>Seu feedback é importante. Não esqueça de enviá-lo!</p>
+                <div class="feedback-bubble">
+                    <button class="button-medium button-clear button-stable feedback-button yes">
+                        <img  title="Positivo" ng-src="images/thumb-up.svg" />
+                        <p class="positive">Positivo</p>
+                    </button>
+                    <button class="button-medium button-clear button-stable feedback-button no">
+                        <img title="Negativo" ng-src="images/thumb-down.svg" />
+                        <p class="negative">Negativo</p>
+                    </button>
+
+                    <!-- <button class="button-medium button-clear button-stable feedback-button no">
+                        <span class="neutral-feedback"></span>
+                        <p class="neutral">Neutro</p>
+                    </button> -->
+                </div>
+            </div>
             <div id="themes-details"></div>
             <div>
                 <button id="close-disclaimer" class="action-button">Got it!</button>
@@ -261,6 +312,11 @@
 <script>
     (function () {
         "use strict";
+
+        function reSubmitMsg(msg){
+            alert(msg);
+            //document.getElementById("msgFied").value = msg;
+        }
 
         //date
         var sessionTimeLimit = 1000*60*2 //2 minutes

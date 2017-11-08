@@ -3,13 +3,8 @@
  */
 {
   "pt": {
-    "title": "Atualmente, eu sei responder os seguintes temas:",
+    "title": "Atualmente, eu sei responder sobre os seguintes temas",
     "button": "Entendi!",
     "disclaimer": "Não voltar a mostrar essa mensagem"
-  },
-  "es": {
-    "title": "Actualmente estoy preparado para responderte a los siguientes temas:",
-    "button": "Comprendo!",
-    "disclaimer": "No volver a mostrar este mensaje"
   }
 }

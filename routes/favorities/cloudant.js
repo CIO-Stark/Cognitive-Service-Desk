@@ -10,15 +10,15 @@ var _cloudant = cloudant({account:username, password:password});
 
 
         // check if DB exists if not create
-        _cloudant.db.create('watsonhelpdesk', function (err, res) {
+        _cloudant.db.create('saintpaul-favorites', function (err, res) {
             if (err) {
                 console.info('Database watsonhelpdesk already exists');
             }
         });
 
-var db = _cloudant.db.use('watsonhelpdesk');
+var db = _cloudant.db.use('saintpaul-favorites');
 var nano = require("nano")(cloudantConfig.credentials.url),
-db_nano = nano.db.use("watsonhelpdesk");
+db_nano = nano.db.use("saintpaul-favorites");
 
 
 exports.search = function() {

@@ -11,6 +11,7 @@
         // check if DB exists if not create
         Cloudant.db.create(collectionName, function (err, res) {
             if (err) {
+                console.error(err);
                 console.info('Database ' + collectionName + ' already exists');
             }
         });

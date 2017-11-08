@@ -11,6 +11,12 @@
             db = require("../../js/db.js"),
             logArr = [];
 
+
+        app.get("/admin", function (req, res) {
+            return res.status(200).render("./views/metricsDashboard.html", {});
+                        
+        });
+
         app.get("/testMail", function (req, res) {
             mailer.engagementMail({
                 "rowID": [1, 2],
@@ -23,7 +29,7 @@
             });
         });
 
-        app.get("/admin", function (req, res) {
+        /*app.get("/admin", function (req, res) {
             ticket_userDB.find({
                 selector: {
                     "email": "laciowa@br.ibm.com"
@@ -42,7 +48,7 @@
                     return res.redirect("/");
                 }
             });
-        });
+        });*/
 
         function test(user, language) {
             var index = 0,

@@ -12,10 +12,7 @@
             "version_date": "2017-02-03"
         },
         "pt": {
-            "workspace_id": "3132255d-b5b3-4dcd-b01c-39e556bb4997"
-        },
-        "es": {
-            "workspace_id": "3132255d-b5b3-4dcd-b01c-39e556bb4997"
+            "workspace_id": process.env.workspace_id || "8f90f83a-79d4-4cbc-a99c-be5ee98289de" //"4e75767a-b21e-4106-9d89-9286646e9914"
         }
     };
 

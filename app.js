@@ -79,7 +79,6 @@ app.engine("html", engines.ejs);
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/public');
 app.use(express.static(__dirname + '/public'));
-app.use("/api-docs",express.static(__dirname + '/public/swagger'));
 app.use(morgan('dev'));
 
 app.use(cookieParser());
@@ -96,12 +95,13 @@ passport.deserializeUser(function(obj, done) {
 });
 
 var cloudantInstance = require("./config/cloudant").init,
-    ConversationFeedbackDB = require("./js/Cloudant")(cloudantInstance, "conversation_feedback"),
-    ConversationAccessHistoryDB = require("./js/Cloudant")(cloudantInstance, "ithelp_access");
+    ConversationFeedbackDB = require("./js/Cloudant")(cloudantInstance, "smeboard-feedback"),
+    ConversationAccessHistoryDB = require("./js/Cloudant")(cloudantInstance, "smeboard-access");
 
 
 
 var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
+/*
 if (services.SingleSignOn) {
   var ssoConfig = services.SingleSignOn[0];
   var client_id = ssoConfig.credentials.clientId;
@@ -177,10 +177,8 @@ if (services.SingleSignOn) {
     var username = 'laciowa@br.ibm.com';
     res.render('main',{email: username, token: token_md5});
   });
-}
+}*/
 
-// SWAGGER
-swagger.configureSwaggerPaths('', 'api-docs', '');
 
 var domain = 'localhost';
 if(argv.domain !== undefined)
@@ -189,11 +187,6 @@ else
     console.log('No --domain=xxx specified, taking default hostname "localhost".');
 
 var applicationUrl = 'http://' + domain;
-swagger.configure('http://stark-dev-conversation-help.mybluemix.net/', '1.0.0');
-
-app.get('/api-docs', authentication.BasicAuthentication, function (req, res) {
-    res.sendFile(__dirname + '/public/swagger/index.html');
-});
 
 // CORS
 app.all('/*', function(req, res, next) {
@@ -205,7 +198,7 @@ app.all('/*', function(req, res, next) {
   else next();
 });
 
-require('./routes/index.js')(app, cloudantInstance, ConversationFeedbackDB,ConversationAccessHistoryDB, request, io, ensureAuthenticated, services, /*ibmdb,*/ fs, logger, mailer, watsonConversation);
+require('./routes/index.js')(app, cloudantInstance, ConversationFeedbackDB,ConversationAccessHistoryDB, request, io, services, /*ibmdb,*/ fs, logger, mailer, watsonConversation, passport);
 
 //Routes Definition
 app.post('/analytics/rating', route_analytics.rating(changeCase,request));

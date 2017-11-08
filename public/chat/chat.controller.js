@@ -4,15 +4,11 @@
     "use strict";
 
 
-    //Socket for Genesys
     var negative_count = 0;
-    var socket = io.connect(document.location.href); //will that work on bluemix?
-    socket.emit('join', {email: document.getElementById('username').innerHTML.trim()}); //get the currect username
-    // socket.emit('StartGenesys', {userid: document.getElementById('username').innerHTML.trim()}); //get the currect username
-
+    
     angular.module("chat.controller", ["ionic.rating"]).controller("ChatController",
-            ["$scope", "$state", "$ionicModal", "$ionicPopup", "$timeout", "$localstorage", "$ionicLoading", "RatingService", "ChatService",  "LoginService", "MetricsService", "FavoritesService", "userControl", "$sce",
-                function ChatController($scope, $state, $ionicModal, $ionicPopup, $timeout, $localstorage, $ionicLoading, RatingService, ChatService, LoginService, MetricsService, FavoritesService, userControl, $sce) {
+            ["$scope", "$state", "$ionicModal", "$ionicPopup", "$timeout", '$ionicPopover', "$localstorage", "$ionicLoading", "RatingService", "ChatService",  "LoginService", "MetricsService", "FavoritesService", "userControl", "$sce",
+                function ChatController($scope, $state, $ionicModal, $ionicPopup, $timeout, $ionicPopover, $localstorage, $ionicLoading, RatingService, ChatService, LoginService, MetricsService, FavoritesService, userControl, $sce) {
 
         var elements = {
             "sendMsgBtn": document.getElementById("msgSender"),
@@ -26,13 +22,8 @@
                 "confidence": "",
                 "chatHistory": [],
                 "entities": [],
-                "intents": "",
-                "type": "",
-                "timestamp": "",
-                "genesys" : {
-                  "active" : false,
-                  "service_id": ""
-                }
+                "intents": []
+                
             }
         };
 
@@ -72,8 +63,9 @@
                 return this;
             }
         },
-        token = document.getElementById("token").innerHTML.trim(),
+        //token = document.getElementById("token").innerHTML.trim(),
         SSOUsername = document.getElementById("username").innerHTML.trim(),
+        SSOname = document.getElementById("userFullName").innerHTML.trim(),
         root = $scope.$root;
         $scope.favState = false;
 
@@ -96,22 +88,32 @@
                 $timeout(function () {
                     root.messages.push(message);
                     methods.scrollToBottom();
+                    $scope.toggleIntents();
                 }, 0);
             },
             "showFavoriteDiv": function (bool) {
                 $scope.favs = bool;
                 return this;
             },
-            "buildDialog": function (text, userId) {
+            "buildDialog": function (text, userId, intents, context) {
                 this.insertMessage({
                     "text": text,
-                    "userId": userId
+                    "userId": userId,
+                    "intents": intents || [],
+                    "context": context || []
                 });
             },
+            // first message to be called when widget is initialized
             "getMessages": function () {
-                ChatService.askWatson("hello", true, null, true).then(function (data) {
+                ChatService.askWatson("hello", true).then(function (data) {
                     if (data.output) {
                         if (data.output.text.length) {
+                            // name replacement
+                            if(/{{nome}}/.test(data.output.text[0]))
+                                data.output.text[0] = 
+                                    data.output.text[0].replace("{{nome}}", userControl.getFirstName());
+                        
+
                             methods.buildDialog(data.output.text[0], "watson");
                             configs.inputFocus();
                         } else {
@@ -135,27 +137,54 @@
                     }
                 }
             },
-            "sendMessage": function () {
+            /**
+             * send message to conversation service
+             * @internalQuestion if it is the message created by user click, so the text will be sent to conversation
+             * but it wont shows up as a dialog ballon
+             */
+            "sendMessage": function (internalQuestion) {
 
                 var inputText = elements.inputEl.value;
                 if (!inputText || inputText === "\r\n") {
                     return;
                 } else {
                     elements.inputEl.value = "";
-                    methods.buildDialog(inputText);
+                    if(!internalQuestion) methods.buildDialog(inputText);
                 }
                 methods.showFavoriteDiv(false);
                 methods.blockUI();
 
-                ChatService.askWatson(inputText, null, props.currentContext.genesys).then(function (data) {
+                // clear genericAnswer context, if it exists to reset it within Conversation
+                // otherwise the app will show genericAnswer all the time, it must shows up only if requested (anything_else questions)
+                if(ChatService.getProps().context.genericAnswer)
+                    ChatService.getProps().context.genericAnswer = false;
+
+                ChatService.askWatson(inputText, null).then(function (data) {
+                    if (data.intents && data.entities) {
+                        methods.updateContext({
+                            "intents": data.intents || [],
+                            "entities": data.entities || [],
+                            "context" : data.context
+                        });
+                    }
+
+                    // look for feedback - final flow and present the feedback div
+                    $timeout(function () {
+                                    configs.showFeedbackDiv(true);
+                                }, 200);
+                    
+                    
                     if (data.output) {
                         if (data.output.text.length) {
 
-                            var shouldAskFeedback = /{{final}}/.test(data.output.text[0]),
-                                finalText = "";
+                            // remove the intents help view (in case user opened it)
+                            root.isIntentHelpView = false;
 
+                            //var shouldAskFeedback = /{{final}}/.test(data.output.text[0]);
+                            var finalText = "";
+                            finalText = data.output.text[0];
 
-                            if (shouldAskFeedback) {
+                            /*if (shouldAskFeedback) {
                                 $timeout(function () {
                                     configs.showFeedbackDiv(true);
                                 }, 200);
@@ -164,20 +193,20 @@
                                 
                             } else {
                                 finalText = data.output.text[0];
-                            }
+                            }*/
 
-                            if (data.intents && data.entities) {
-                                methods.updateContext({
-                                    "intents": data.intents || [],
-                                    "entities": data.entities || []
-                                });
-                            }
+                            
+                            methods.buildDialog(finalText, "watson", data.intents, data.context);
+                            
 
-                            if (Number(props.currentContext.confidence) <= 0.30) {
+                            if(data.context.otherQuestions)
+                                methods.buildDialog(data.context.otherQuestions, "watson", data.intents);
+
+                            /*if (Number(props.currentContext.confidence) <= 0.30) {
                                 methods.buildDialog("Não entendi", "watson");
                             } else {
-                                methods.buildDialog(finalText, "watson");
-                            }
+                                methods.buildDialog(finalText, "watson", data.intents);
+                            }*/
 
                             console.log(data);
 
@@ -197,7 +226,7 @@
             "updateContext": function (contextObj) {
                 console.log(contextObj);
                  if(contextObj.intents.length) {
-                    props.currentContext.intents = contextObj.intents[0].intent;
+                    props.currentContext.intents = contextObj.intents;
                     props.currentContext.confidence = contextObj.intents[0].confidence;
                  }
 
@@ -215,13 +244,11 @@
                 return this;
             },
             "init": function (SSOUsername) {
-                LoginService.validateSession(SSOUsername).then(function (data) {
+                LoginService.validateSession(SSOUsername, SSOname).then(function (data) {
                     root.messages = [];
                     $localstorage.set("usermail", SSOUsername);
-                    $scope.rate = 0;
-                    $scope.max = 5;
                     root.watsonRobot = {
-                        _id: "534b8e5aaa5e7afc1b23e69b",
+                        _id: "",
                         pic: "images/watsonPic.svg",
                         username: "Watson"
                     };
@@ -229,9 +256,10 @@
                     props.currentContext.userID = SSOUsername;
                     props.currentContext.chatHistory = root.messages;
                     root.favState = true;
-                    root.token = token;
-                    root.proxyURL = root.proxyURL || "";
+                    //root.token = token;
                     root.user = userControl.getFullUser();
+
+                    // get initial message from conversation
                     methods.getMessages();
                 }, function (responseStatus) {
                     window.alert("Session expired, please log in again");
@@ -246,14 +274,14 @@
             $scope.data = {};
             $scope.myPopup = $ionicPopup.show({
                 template: "<input type='text' maxlength='20' class='popup-input' ng-model='data.favoriteName'>",
-                title: "Add favorite",
-                subTitle: "Create a name for this chat",
+                title: "Adicionar favorito",
+                subTitle: "Dê um nome para este chat",
                 cssClass: "favorite-popup",
                 scope: $scope,
                 buttons: [{
-                    text: "Cancel"
+                    text: "Cancelar"
                 }, {
-                    text: "<b>Save</b>",
+                    text: "<b>Salvar</b>",
                     type: "button-positive",
                     onTap: function (e) {
                         if (!$scope.data.favoriteName) {
@@ -321,7 +349,8 @@
         }
 
         $scope.favoriteMessage = function (favState) {
-            return !$scope.favState ? saveMessageOnDatabase() : deleteMessageOnDatabase();
+            //return !$scope.favState ? saveMessageOnDatabase() : deleteMessageOnDatabase();
+            return saveMessageOnDatabase();
         };
 
         $scope.closePopup = function () {
@@ -401,21 +430,34 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         };
 
+        $scope.trustContent = function(msg) {
+            //console.log($sce.trustAsHtml(root.messages[0].text));
+               return $sce.trustAsHtml(msg);
+        };
+
+        $scope.pergunta = function(msg) {
+            elements.inputEl.value = msg.replace("-", " ");
+            methods.sendMessage(true);
+        };
+
         root.loadFileBox = function (unique_link) {
             $scope.boxlinkof = $sce.trustAsResourceUrl(unique_link);
             $scope.openModal();
         };
 
         $scope.sendFeedback = function (type) {
-            props.currentContext.timestamp = new Date().getTime();
-            props.currentContext.type = type;
+            props.currentContext.feedbackDate = new Date().getTime();
+            props.currentContext.type = 'feedback';
+            props.currentContext.feedbackStatus = type;
+            props.currentContext.userCount = "User";
+            props.currentContext.chatHistory = root.messages;
             console.log(props.currentContext);
 
-            if (type === "positive") {
+            /*if (type === "positive") {
                 methods.buildDialog(root.defaultMessages.goodAnswer);
             } else {
                 methods.buildDialog(root.defaultMessages.badAnswer);
-            }
+            }*/
 
             methods.blockUI();
             ChatService.sendFeedback(props.currentContext).then(function (data) {
@@ -432,43 +474,32 @@
 
 
                 negative_count++;
-                if(negative_count == 2) { //genesys
+                /*if(negative_count == 2) { //genesys
                   methods.buildDialog('I see you are facing issues. Let me call someone to help you.', 'watson');
                   socket.emit('StartGenesys', {userid: document.getElementById('username').innerHTML.trim()});
-                }
+                }*/
             });
         };
 
 
 
+        
 
-        //Genesys new message
-        socket.on("new_msg", function(data) {
-          methods.buildDialog(data.message, "watson");
-          // methods.scrollToBottom();
-        });
-
-        socket.on("GenesysStarted", function(data) {
-          props.currentContext.genesys.active = true;
-          props.currentContext.genesys.service_id = data.service_id;
-        });
-
-        //Genesys request error
-        socket.on("genesysError", function(data) {
-
-        });
-
-
-        //Genesys request error
-        socket.on("finish_genesys", function(data) {
-          props.currentContext.genesys.active = false;
-          props.currentContext.genesys.service_id = "";
-
-          methods.buildDialog(data.message, "watson");
-          // methods.scrollToBottom();
-          // socket.emit('remove_user', {userid: document.getElementById('username').innerHTML.trim()}); //get the currect username
-          socket.disconnect()
-        });
-
+    }])
+    //solution found to present content from Conversation including angular directives
+    //https://stackoverflow.com/questions/22737927/angular-ng-bind-html-filters-out-ng-click?noredirect=1&lq=1
+    .directive('compile', ['$compile', function ($compile) {
+    return function(scope, element, attrs) {
+        scope.$watch(
+            function(scope) {
+            return scope.$eval(attrs.compile);
+            },
+            function(value) {
+            element.html(value);
+            $compile(element.contents())(scope);
+            }
+        )
+        }
     }]);
+
 }());

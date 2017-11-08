@@ -2,7 +2,9 @@
 /*jslint nomen: true */
 (function () {
     'use strict';
-    angular.module('favorites.controller', []).controller('FavoritesController', ['$scope', '$state', '$ionicLoading', 'defaultMessages', '$localstorage', 'FavoritesService', 'LoginService', 'userControl', '$ionicModal', '$timeout', '$ionicPopover', '$ionicPopup', function ($scope, $state, $ionicLoading, defaultMessages, $localstorage, FavoritesService, LoginService, userControl, $ionicModal, $timeout, $ionicPopover, $ionicPopup) {
+    angular.module('favorites.controller', [])
+    .controller('FavoritesController', ['$scope', '$window', '$state', '$ionicLoading', 'defaultMessages', '$localstorage', 'FavoritesService', 'LoginService', 'userControl', '$ionicModal', '$timeout', '$ionicPopover', '$ionicPopup', 
+        function ($scope, $window, $state, $ionicLoading, defaultMessages, $localstorage, FavoritesService, LoginService, userControl, $ionicModal, $timeout, $ionicPopover, $ionicPopup) {
 
 
         var root = $scope.$root,
@@ -158,6 +160,7 @@
             }
         };
 
+
         $scope.isGroupShown = function (chat) {
             return $scope.shownGroup === chat;
         };
@@ -196,13 +199,13 @@
                         arrLength = root.arr.length,
                         arrayToDeleteLength = arrayToDelete.length;
                 
-                    for (i; i < arrLength; i += 1) {
-                        for (j; j < arrayToDeleteLength; j += 1) {
+                    for (i; i < arrLength; i ++) {
+                        for (j; j < arrayToDeleteLength; j ++) {
                             if (root.arr[i]._id === arrayToDelete[j]) {
-                                if (root.messages === docs[j].chat && !$scope.firstEntry) {
+                                /*if (root.messages === docs[j].chat && !$scope.firstEntry) {
                                     $scope.firstEntry = true;
                                     currentChatLoad();
-                                }
+                                }*/
                                 $scope.arr.splice(i, 1);
                                 if (root.lastFavorite) {
                                     if (arrayToDelete === root.lastFavorite.id) {
@@ -249,6 +252,7 @@
 
         $scope.doLogout = function () {
             LoginService.logout();
+            $window.location.href = '/logout';
         };
 
         root.isClicked = false;

@@ -42,11 +42,11 @@
                     return res.redirect('/');
                 }
 
-                if (user.docs.length) {
+                //if (user.docs.length) {
                     return res.status(200).render("./analytics/analytics.view.html");
-                } else {
-                    return res.redirect('/');
-                }
+                //} else {
+                    //return res.redirect('/');
+                //}
             });
         });
 
@@ -128,6 +128,9 @@
             }
         });
 
+        /**
+         * save user accessing the system
+         */
         app.post("/saveAccess", function (req, res) {
 
             if(!req.body.country || !req.body.browserLanguage){
@@ -140,7 +143,9 @@
                 {
                     "country": req.body.country,
                     "timestamp": now.getTime(),
-                    "browserLanguage": req.body.browserLanguage
+                    "feedbackDate": now.getTime(),
+                    "browserLanguage": req.body.browserLanguage,
+                    "userCount": "user"
                 }
             ).then(function success(data) {
                 console.log(data)

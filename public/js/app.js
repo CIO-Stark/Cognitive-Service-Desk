@@ -12,6 +12,7 @@
                 window.StatusBar.styleDefault();
             }
             //
+            //$rootScope.proxyURL = window.location.hostname === "localhost" ? "https://watsonithelpbeta.mybluemix.net" : "";
             $rootScope.proxyURL = window.location.hostname === "localhost" ? "http://localhost:3000" : "";
         });
     });
@@ -32,29 +33,17 @@
 
     app.service("userControl", function ($rootScope, $localstorage) {
         var user = {
-                _id: "xxxxxx",
-                pic: '',
-                username:  "",
-                locale: "",
-                formalName:  "Teste",
-                countryPhone: "",
-                ext: ""
+                _id: "",
+                pic: "",
+                username: "",
+                //locale: $localstorage.get("locale") || "",
+                name:  ""               
             },
             favorites = [];
 
         return {
             setFormalName: function (name) {
-                user.formalName = name;
-            },
-            setCountryPhone: function (phone) {
-                user.countryPhone = phone;
-            },
-
-            setUserLocale: function (locale) {
-                user.locale = locale;
-            },
-            setCountryExtension: function (ext) {
-                user.ext = ext;
+                user.name = name;
             },
             setUserUid: function (uid) {
                 user.uid = uid;
@@ -62,28 +51,23 @@
             getUser: function () {
                 return user.username;
             },
-            getUserLocale: function () {
-                return user.locale;
-            },
             getFullUser: function () {
                 return user;
             },
-            getFormalName: function () {
-                return user.formalName.substring(0, (user.formalName.indexOf(" "))) || "IBMer";
+            getName: function(){
+                return user.name;
             },
-            setUserCountryPrediction: function (country) {
-                user.countryPrediction = country;
+            getFirstName: function () {
+                return user.name.substring(0, (user.name.indexOf(" "))) || user.name;
             },
             setUser: function (userObject) {
-                user.username = $localstorage.get("intranetId") || userObject.username;
-                userObject.locale = "pt" ;
-               
+                
                 user._id = userObject._id;
-                user.pic = userObject.pic;
+                //user.pic = userObject.pic;
 
-                user.formalName = $localstorage.get("formalName") || "IBMer";
-                user.locale = $localstorage.get("locale") || userObject.locale;
-                user.uid = $localstorage.get("uid") || userObject.uid;
+                user.name = userObject.name;
+                user.username = userObject.username;
+                //user.uid = $localstorage.get("uid") || userObject.uid;
 
                 $rootScope.user = userObject;
 

@@ -1,4 +1,82 @@
-[ {
-  "email": "teste@teste.com.br",
+[{
+  "email": "matiasor@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "brigno@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "rsantill@ar.ibm.com",
+  "role": "admin"
+}, {
+  "email": "ryo@br.ibm.com",
+  "role": "analist"
+}, {
+  "email": "samirain@br.ibm.com",
+  "role": "analist"
+}, {
+  "email": "quintella@br.ibm.com",
+  "role": "admin"
+}, {
+  "email": "ffrigo@br.ibm.com",
+  "role": "admin"
+}, {
+  "email": "bmazzoco@br.ibm.com",
+  "role": "admin"
+}, {
+  "email": "dcerag@br.ibm.com",
+  "role": "admin"
+}, {
+  "email": "laciowa@br.ibm.com",
+  "role": "admin"
+}, {
+  "email": "rafalima@br.ibm.com",
+  "role": "admin"
+}, {
+  "email": "amansi@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "villajed@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "amansi@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "duranfa@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "fcarbone@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "fgnunez@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "hajares@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "elizmai@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "nicocast@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "rcabrera@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "soreiras@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "fliban@ar.ibm.com",
+  "role": "analist"
+}, {
+  "email": "forni@br.ibm.com",
+  "role": "analist"
+}, {
+  "email": "symonin@br.ibm.com",
+  "role": "admin"
+}, {
+  "email": "ftrino@br.ibm.com",
+  "role": "admin"
+}, {
+  "email": "rpmarcel@br.ibm.com",
   "role": "admin"
 }]

@@ -11,39 +11,19 @@
             "locale": ""
         };
 
-        function checkLocale() {
+        /*function checkLocale() {
             var locale = userControl.getUserLocale();
             props.locale = locale;
             defaultMessages.translate();
             return locale === 'pt' ? 'pt' : 'es';
         }
-
+        */
         return {
-            "askWatson": function (question, reloadLanguage, genesys, initial) {
-                if (reloadLanguage) {
-                    checkLocale();
-                }
+            "getProps":  function(){ return props},
+            "askWatson": function (question, initial) {
+                
                 return new Promise(function(resolve, reject) {
-
-
-                  if(genesys && genesys.active) {
-
-                    $http({
-                        "method": "POST",
-                        "url": "/askGenesys",
-                        "timeout": 50000,
-                        "data": {
-                            "message": question,
-                            "service_id": genesys.service_id
-                        }
-                    }).success(function(data) {
-                      console.log(data);
-                        resolve({genesyMessage: data});
-                    }).error(function(data, status) {
-                        resolve($rootScope.defaultMessages.error[0]);
-                    });
-
-                  } else {
+                   
                     $http({
                         "method": "POST",
                         "url": "/askWatson",
@@ -66,7 +46,7 @@
                     }).error(function(data, status) {
                         resolve($rootScope.defaultMessages.error[0]);
                     });
-                  }
+                  
 
 
                 });
@@ -76,6 +56,11 @@
             "sendFeedback": function (feedbackObj) {
                 return new Promise(function(resolve, reject) {
                     feedbackObj.locale = props.locale;
+
+                    // for saintPaul, feedback is for each chat interaction, so jusr send question and answer on each chathistory
+                    if(feedbackObj.chatHistory)
+                        feedbackObj.chatHistory = feedbackObj.chatHistory.slice(Math.max(feedbackObj.chatHistory.length - 2, 0));
+
                     $http({
                         "method": "POST",
                         "url": "/sendFeedback",
@@ -85,6 +70,19 @@
                         }
                     }).success(function(data) {
                         props.context = props.initialContext;
+                        resolve(data);
+                    }).error(function(err) {
+                        resolve(err);
+                    });
+                });
+            },
+            "findIntentsHelpContent": function (intent) {
+                return new Promise(function(resolve, reject) {
+                    $http({
+                        "method": "GET",
+                        "url": "/intentsHelpContent/" + intent,
+                        "timeout": 5000
+                    }).success(function(data) {
                         resolve(data);
                     }).error(function(err) {
                         resolve(err);
