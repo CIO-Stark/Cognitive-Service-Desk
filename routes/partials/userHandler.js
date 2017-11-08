@@ -5,7 +5,7 @@
 	
 
 	var records = [
-                { id: 1, username: 'ricardo.gil@br.ibm.com', password: '123', name: 'Ricardo Gil'}
+                { id: 1, username: 'usuario', password: 'senha', name: 'Usuario'}
         ];
 
         exports.findByUsername = function(username, cb) {
