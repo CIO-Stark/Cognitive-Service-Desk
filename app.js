@@ -100,7 +100,7 @@ var cloudantInstance = require("./config/cloudant").init,
 
 
 
-var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
+var services = JSON.parse(process.env.VCAP || "{}");
 /*
 if (services.SingleSignOn) {
   var ssoConfig = services.SingleSignOn[0];

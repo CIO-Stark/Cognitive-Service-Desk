@@ -6,8 +6,8 @@
 
     module.exports = {
         "creds": {
-            "username": JSON.parse(process.env.VCAP_SERVICES)["conversation"][0].credentials.username,
-            "password": JSON.parse(process.env.VCAP_SERVICES)["conversation"][0].credentials.password,
+            "username": JSON.parse(process.env.VCAP)["conversation"][0].credentials.username,
+            "password": JSON.parse(process.env.VCAP)["conversation"][0].credentials.password,
             "version": "v1",
             "version_date": "2017-02-03"
         },

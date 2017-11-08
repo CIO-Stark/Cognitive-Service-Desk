@@ -31,7 +31,7 @@ module.exports = function (app) {
   app.use(express.static(__dirname + '/../public'));
 
   // Add error handling in dev
-  if (!process.env.VCAP_SERVICES) {
+  if (!process.env.VCAP) {
     app.use(errorhandler());
   }
 
