@@ -19,7 +19,7 @@ var extend   = require('util')._extend;
 var route_cloudant = require('./routes/favorities/cloudant.js');
 var route_analytics = require('./routes/analytics/analytics.js');
 var route_feedback = require('./routes/feedback/feedback.js');
-//var route_conversation = require('./routes/conversation/conversation.js');
+var route_conversation = require('./routes/conversation/conversation.js');
 var route_profile = require('./routes/profile/profile.js');
 var route_security = require('./routes/security/token.js');
 
