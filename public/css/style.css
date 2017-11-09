@@ -329,15 +329,14 @@ ion-item.item.active {
 }
 
 .background-logo.three{
-    height: 300px;
-    right: 15px;
-    top: 10px;
-    -ms-transform: rotate(20deg);
-    transform: rotate(20deg);
-    -webkit-transform: rotate(20deg);
-    -moz-transform: rotate(20deg);
-    -o-transform: rotate(20deg);
-    opacity: .5;
+    height: 6%;
+    left: 6%;
+    top: 1%;
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
 }
 
 .ion-log-out {
