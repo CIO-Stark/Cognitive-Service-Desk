@@ -316,6 +316,7 @@ ion-item.item.active {
     -moz-transform: rotate(20deg);
     -o-transform: rotate(20deg);
 }
+
 .background-logo.two {
     height: 300px;
     right: -100px;
@@ -325,6 +326,17 @@ ion-item.item.active {
     -webkit-transform: rotate(-20deg);
     -moz-transform: rotate(-20deg);
     -o-transform: rotate(-20deg);
+}
+
+.background-logo.three{
+    height: 300px;
+    left: -195px;
+    top: 40px;
+    -ms-transform: rotate(20deg);
+    transform: rotate(20deg);
+    -webkit-transform: rotate(20deg);
+    -moz-transform: rotate(20deg);
+    -o-transform: rotate(20deg);
 }
 
 .ion-log-out {
