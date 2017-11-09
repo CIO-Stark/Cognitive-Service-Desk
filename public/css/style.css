@@ -331,7 +331,7 @@ ion-item.item.active {
 .background-logo.three{
     height: 300px;
     left: 15px;
-    top: 40px;
+    top: 10px;
     -ms-transform: rotate(-20deg);
     transform: rotate(-20deg);
     -webkit-transform: rotate(-20deg);
