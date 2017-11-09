@@ -7,12 +7,12 @@
     module.exports = function (app, cloudant, passport) {
         
         app.get('/sme', function (req, res) {
-            return res.status(200).render('./views/login.html', {});
+            return res.status(200).render('./views/.html', {});
 
         });
 
         app.post('/smelogin', 
-        passport.authenticate('local', { failureRedirect: '/login' }),
+        passport.authenticate('local', { failureRedirect: '/' }),
             function(req, res) {
                 res.redirect('/dashboard');
 		});
@@ -20,7 +20,7 @@
         app.get('/logout',
         		  function(req, res){
         		    req.logout();
-        		    res.redirect('/login');
+        		    res.redirect('/');
         		  });
         
         

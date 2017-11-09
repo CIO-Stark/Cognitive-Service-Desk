@@ -14,17 +14,17 @@
                 require("../passport")(app, passport);
 
                 app.get("/", function (req, res) {
-                        res.redirect('/login');
+                        res.redirect('/');
                 });
 
                                 
-                app.get("/login", function (req, res) {
+                app.get("/", function (req, res) {
                         return res.status(200).render("login", {
                                 user: req.user || ""
                         });
                 });
 
-                app.post('/login',
+                app.post('/',
                         passport.authenticate('local', { failureRedirect: 'login'}),
                                 function(req, res) {
                                         //res.redirect('home');
@@ -35,7 +35,7 @@
                 app.get('/logout',
                         function (req, res) {
                                 req.logout();
-                                res.redirect('/login');
+                                res.redirect('/');
                 });
 
                 
@@ -43,7 +43,7 @@
                 app.get('/validateUser',
                         function (req, res) {
                                 req.logout();
-                                res.redirect('/login');
+                                res.redirect('/');
                 });
 
 

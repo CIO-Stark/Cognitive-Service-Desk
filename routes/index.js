@@ -11,7 +11,7 @@
         conversationRoutes = require("./partials/conversationHandler"),
         feedbackRoutes = require("./partials/feedbackHandler"),
         messageRoutes = require("./partials/messagesHandler"),
-        loginRoutes = require('./partials/loginHandler'),
+        loginRoutes = require('./partials/Handler'),
         genesysRoutes = require("./partials/genesysHandler"),
         analyticsRoutes = require("./partials/analyticsHandler"),
         intentsRoutes = require("./partials/intentsHandler");
