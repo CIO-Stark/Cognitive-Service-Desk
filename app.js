@@ -25,7 +25,6 @@ var route_security = require('./routes/security/token.js');
 
 //var ibmdb = require('ibm_db');
 var changeCase = require('change-case');
-var math = require('mathjs');
 var trim = require('trim');
 var S = require('string');
 var util = require('util');
